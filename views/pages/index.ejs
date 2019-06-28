@@ -3,64 +3,448 @@
 <head>
   <% include ../partials/header.ejs %>
 </head>
-
 <body>
 
-  <% include ../partials/nav.ejs %>
+<div class="background">
+    <svg id="svg-bg" width="100%" height="100%">
+        <defs>
+            <pattern id="pid-0.5992761334380975" x="0" y="0" width="204.8" height="204.8" patternUnits="userSpaceOnUse">
+                <g transform="scale(0.8)"><path d="M 1 1 L 31 1 L 31 31 L 1 31 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8577959893527721s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 1 33 L 31 33 L 31 63 L 1 63 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.7583049531397663s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 1 65 L 31 65 L 31 95 L 1 95 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.5697305005842118s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 1 97 L 31 97 L 31 127 L 1 127 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.44237229456646693s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 1 129 L 31 129 L 31 159 L 1 159 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8039884976709816s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 1 161 L 31 161 L 31 191 L 1 191 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.1875093217008038s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 1 193 L 31 193 L 31 223 L 1 223 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.894322505004593s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 1 225 L 31 225 L 31 255 L 1 255 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.348910485644813s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 33 1 L 63 1 L 63 31 L 33 31 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.3553452765599541s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 33 33 L 63 33 L 63 63 L 33 63 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8867038994466443s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 33 65 L 63 65 L 63 95 L 33 95 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.01509861314604704s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 33 97 L 63 97 L 63 127 L 33 127 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.6780204006105637s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 33 129 L 63 129 L 63 159 L 33 159 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.9425705159584465s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 33 161 L 63 161 L 63 191 L 33 191 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.11815974460727201s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 33 193 L 63 193 L 63 223 L 33 223 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8533426801856746s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 33 225 L 63 225 L 63 255 L 33 255 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.7354426424711437s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 65 1 L 95 1 L 95 31 L 65 31 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.971778001820379s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 65 33 L 95 33 L 95 63 L 65 63 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.9153690954597967s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 65 65 L 95 65 L 95 95 L 65 95 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8113993854013274s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 65 97 L 95 97 L 95 127 L 65 127 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.2976543198856314s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 65 129 L 95 129 L 95 159 L 65 159 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8748614977658481s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 65 161 L 95 161 L 95 191 L 65 191 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.10456504355022146s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 65 193 L 95 193 L 95 223 L 65 223 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.7700836917530457s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 65 225 L 95 225 L 95 255 L 65 255 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.7441373467342692s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 97 1 L 127 1 L 127 31 L 97 31 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.9786095079878432s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 97 33 L 127 33 L 127 63 L 97 63 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.5028436844708664s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 97 65 L 127 65 L 127 95 L 97 95 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.3464758035034847s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 97 97 L 127 97 L 127 127 L 97 127 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.23437722794909424s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 97 129 L 127 129 L 127 159 L 97 159 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.422918218504397s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 97 161 L 127 161 L 127 191 L 97 191 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.05011524176354407s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 97 193 L 127 193 L 127 223 L 97 223 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.6586614774792404s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 97 225 L 127 225 L 127 255 L 97 255 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8604669939834838s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 129 1 L 159 1 L 159 31 L 129 31 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.4376657328090531s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 129 33 L 159 33 L 159 63 L 129 63 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.7124831251662855s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 129 65 L 159 65 L 159 95 L 129 95 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.2681809172131143s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 129 97 L 159 97 L 159 127 L 129 127 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.5318525330701365s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 129 129 L 159 129 L 159 159 L 129 159 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8983821330129238s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 129 161 L 159 161 L 159 191 L 129 191 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.7749028022258161s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 129 193 L 159 193 L 159 223 L 129 223 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.7719435865133285s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 129 225 L 159 225 L 159 255 L 129 255 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.014932690734121306s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 161 1 L 191 1 L 191 31 L 161 31 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.3645188221055058s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 161 33 L 191 33 L 191 63 L 161 63 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.4905265377448721s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 161 65 L 191 65 L 191 95 L 161 95 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.5739778599170836s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 161 97 L 191 97 L 191 127 L 161 127 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.9055573134486277s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 161 129 L 191 129 L 191 159 L 161 159 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.9612294763494191s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 161 161 L 191 161 L 191 191 L 161 191 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.9582999674342015s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 161 193 L 191 193 L 191 223 L 161 223 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.2791055747524013s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 161 225 L 191 225 L 191 255 L 161 255 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.9659378260297002s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 193 1 L 223 1 L 223 31 L 193 31 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.12054974203375099s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 193 33 L 223 33 L 223 63 L 193 63 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.38972917723796885s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 193 65 L 223 65 L 223 95 L 193 95 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.3940498204252993s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 193 97 L 223 97 L 223 127 L 193 127 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.5276041717948825s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 193 129 L 223 129 L 223 159 L 193 159 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.1776555096065839s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 193 161 L 223 161 L 223 191 L 193 191 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.6797205225088016s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 193 193 L 223 193 L 223 223 L 193 223 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.1010218460745093s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 193 225 L 223 225 L 223 255 L 193 255 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.36589572428132344s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 225 1 L 255 1 L 255 31 L 225 31 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8222165077364418s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 225 33 L 255 33 L 255 63 L 225 63 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.023829197531975495s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 225 65 L 255 65 L 255 95 L 225 95 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.5972551883736974s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 225 97 L 255 97 L 255 127 L 225 127 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.4529363158076s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 225 129 L 255 129 L 255 159 L 225 159 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8150863040555847s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 225 161 L 255 161 L 255 191 L 225 191 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.10346949752855385s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 225 193 L 255 193 L 255 223 L 225 223 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8542514409788348s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path><path d="M 225 225 L 255 225 L 255 255 L 225 255 Z" fill="#bffff7">
+                        <animate attributeName="fill" begin="-0.8788244692273678s" values="#bffff7;#41fff5;#00c8ff;#bffff7" keyTimes="0;0.3333333333333333;0.6666666666666666;1" dur="1s" repeatCount="indefinite"></animate>
+                    </path></g>
+            </pattern>
+        </defs>
+        <rect width="100vw" height="100vh" fill="url(#pid-0.5992761334380975)"></rect>
+    </svg>
 
-<div class="jumbotron text-center">
-  <div class="container">
-    <a href="/" class="lang-logo">
-      <img src="/lang-logo.png">
-    </a>
-    <h1>Getting Started with Node on Heroku</h1>
-    <p>This is a sample Node application deployed to Heroku. It's a reasonably simple app - but a good foundation for understanding how to get the most out of the Heroku platform.</p>
-    <a type="button" class="btn btn-lg btn-default" href="https://devcenter.heroku.com/articles/getting-started-with-nodejs"><span class="glyphicon glyphicon-flash"></span> Getting Started with Node</a>
-    <a type="button" class="btn btn-lg btn-primary" href="https://github.com/heroku/node-js-getting-started"><span class="glyphicon glyphicon-download"></span> Source on GitHub</a>
-  </div>
 </div>
-<div class="container">
-  <div class="alert alert-info text-center" role="alert">
-    To deploy your own copy, and learn the fundamentals of the Heroku platform, head over to the <a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs" class="alert-link">Getting Started with Node on Heroku</a> tutorial.
-  </div>
-  <hr>
-  <div class="row">
-    <div class="col-md-6">
-      <h3><span class="glyphicon glyphicon-info-sign"></span> How this sample app works</h3>
-      <ul>
-        <li>This app was deployed to Heroku, either using Git or by using <a href="https://github.com/heroku/node-js-getting-started">Heroku Button</a> on the repository.</li>
-
-        <li>When Heroku received the source code, it fetched all the dependencies in the <a href="https://github.com/heroku/node-js-getting-started/blob/master/package.json">package.json</a>, creating a deployable slug.</li>
-        <li>The platform then spins up a dyno, a lightweight container that provides an isolated environment in which the slug can be mounted and executed.</li>
-        <li>You can scale your app, manage it, and deploy over <a href="https://addons.heroku.com/">150 add-on services</a>, from the Dashboard or CLI.</li>
-      </ul>
-    </div>
-    <div class="col-md-6">
-      <h3><span class="glyphicon glyphicon-link"></span> Next Steps</h3>
-      <ul>
-        <li>If you are following the <a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs">Getting Started</a> guide, then please head back to the tutorial and follow the next steps!</li>
-        <li>If you deployed this app by deploying the Heroku Button, then in a command line shell, run:</li>
-        <ul>
-          <li><code>git clone https://github.com/heroku/node-js-getting-started.git</code> - this will create a local copy of the source code for the app</li>
-          <li><code>cd node-js-getting-started</code> - change directory into the local source code repository</li>
-          <li><code>heroku git:remote -a &lt;your-app-name></code> - associate the Heroku app with the repository</li>
-          <li>You'll now be set up to run the app locally, or <a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs#push-local-changes">deploy changes</a> to Heroku</li>
-        </ul>
-      </ul>
-      <h3><span class="glyphicon glyphicon-link"></span> Helpful Links</h3>
-      <ul>
-        <li><a href="https://www.heroku.com/home">Heroku</a></li>
-        <li><a href="https://devcenter.heroku.com/">Heroku Dev Center</a></li>
-        <li><a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs">Getting Started with Node on Heroku</a></li>
-        <li><a href="https://devcenter.heroku.com/articles/deploying-nodejs">Deploying Node Apps on Heroku</a></li>
-      </ul>
-    </div>
-  </div> <!-- row -->
-   <div class="alert alert-info text-center" role="alert">
-    Please do work through the Getting Started guide, even if you do know how to build such an application.  The guide covers the basics of working with Heroku, and will familiarize you with all the concepts you need in order to build and deploy your own apps.
-  </div>
+<div id="people">
+<!--    <div class="person"><img class="person-img" src="texture/1.png"></div>-->
+</div>
+<div id="container">
+    <div><span class="word">Hello</span> <span class="word">my</span> <span class="word">name</span></div>
 </div>
 
+<script type="text/javascript">
+
+    const SERVER_URL = 'https://bicon.net.solidwallet.io/api/v3';
+
+    const IconService = window['icon-sdk-js'];
+    const provider = new IconService.HttpProvider(SERVER_URL);
+    const iconService = new IconService(provider);
+    const IconConverter = IconService.IconConverter;
+    const IconBuilder = IconService.IconBuilder;
+
+    const scoreAddress = 'cxf80b17752d7714f010ff05fce9bec8a2cac23790';
+    let fromAddress = "";
+
+    makePostCall = function (data) { // here the data and url are not hardcoded anymore
+        let json_data = JSON.stringify(data);
+
+        return $.ajax({
+            type: "POST",
+            url: SERVER_URL,
+            data: json_data,
+            crossDomain: true,
+            dataType: "json",
+            contentType: "application/json;charset=utf-8"
+        });
+    }
+
+
+    let pop = new Howl({
+        src: ['sounds/pop.mp3'],
+        sprite: {
+            ding : [0, 1000]
+        },
+        autoplay: false
+    });
+
+    function notifySound() {
+        pop.play("ding");
+    }
+
+    function setIntervalX(callback, delay, repetitions) {
+        var x = 0;
+        var intervalID = window.setInterval(function () {
+
+            callback();
+
+            if (++x === repetitions) {
+                window.clearInterval(intervalID);
+            }
+        }, delay);
+    }
+
+    let region = "<%- REGION %>";
+
+    let numOfPeople = 0;
+
+    let socket = io("/" + region);
+
+    //
+    // SOCKETS
+    //
+
+    socket.on('init', function (data) {
+        console.log(data);
+        console.log("Total number of people on server: " + data.length);
+        numOfPeople = data.length;
+
+        let string = "";
+        for(var i = 0; i < numOfPeople; i++){
+            string+= '<div class="person person-connected" data-id="' + data[i] + '" ><img class="person-img" src="images/smilyface_sm.png"  alt="person"></div>';
+        }
+        $("#people").append(string);
+
+        $(".person").each(function() {
+            let randX = Math.random() * 38 - 19;
+            let scaleX = 1;
+            if (randX > 0) {
+                randX = randX + 75;
+
+            }
+            else {
+                randX = randX + 15;
+                scaleX = -1;
+            }
+            let randY = Math.random() * 50 - 10;
+            let zIndex = 100 - randY;
+
+            $(this).css({
+                "position" : "absolute",
+                "right" : randX + "vw",
+                "bottom" : randY + "vh",
+                "transform" : "scaleX(" + scaleX +")",
+                "z-index" : parseInt(zIndex)
+            });
+
+    });
+
+        anime({
+            targets: ".person",
+            opacity: 1,
+            translateY: [100, 0],
+            delay: anime.stagger(100, {start: 1000}),
+            duration: 1000,
+            changeBegin: function(anim) {
+                setIntervalX(notifySound, 100, numOfPeople);
+            },
+        });
+
+    });
+
+    socket.on('enter', function (data) {
+        console.log("User " + data + " entered!");
+        numOfPeople++;
+        console.log("Total number of people on server: " + numOfPeople);
+
+        let newlyAdded = $('<div class="person person-connected" data-id="' + data + '" ><img class="person-img" src="images/smilyface_sm.png"  alt="person"></div>').appendTo("#people");
+
+        let randX = Math.random() * 38 - 19;
+        let scaleX = 1;
+        if (randX > 0) {
+            randX = randX + 75;
+        }
+        else {
+            randX = randX + 15;
+            scaleX = -1;
+        }
+        let randY = Math.random() * 50 - 10;
+        let zIndex = 100 - randY;
+
+        newlyAdded.css({
+            "position" : "absolute",
+            "right" : randX + "vw",
+            "bottom" : randY + "vh",
+            "transform" : "scaleX(" + scaleX +")",
+            "z-index" : parseInt(zIndex)
+        });
+
+        anime({
+            targets: newlyAdded[0],
+            opacity: 1,
+            translateY: [100, 0],
+            duration: 1000,
+        });
+        notifySound();
+    });
+
+    socket.on('exit', function (data) {
+        console.log("User " + data + " left...");
+        numOfPeople--;
+        console.log("Total number of people on server: " + numOfPeople);
+
+        let personToRemove = $(".person-connected[data-id=\"" + data + "\"]");
+        personToRemove.removeClass("person-connected");
+        anime({
+            targets: personToRemove[0],
+            opacity: 0,
+            translateY: [0, 100],
+            duration: 1000,
+        });
+    });
+
+
+
+    window.addEventListener("ICONEX_RELAY_RESPONSE", eventHandler, true);
+    function eventHandler(event) {
+        const type = event.detail.type
+        const payload = event.detail.payload
+        console.log("Got Response: ")
+        console.log(JSON.stringify(payload));
+        switch (type) {
+            case "RESPONSE_ADDRESS":
+                fromAddress = payload;
+
+                break
+            case "RESPONSE_JSON-RPC":
+                break
+            default:
+        }
+    }
+
+    let askForAddress = new CustomEvent('ICONEX_RELAY_REQUEST', {
+        detail: {
+            type: 'REQUEST_ADDRESS'
+        },
+        bubbles : true
+    });
+
+    // window.dispatchEvent(askForAddress);
+
+
+    // methodType = "icx_sendTransaction" || "icx_call"
+    function relayRequest(data) {
+        if (!data) {
+            alert('Check the param data')
+            return
+        }
+
+        const parsed = JSON.parse(data);
+
+        if (parsed.method === "icx_sendTransaction" && (fromAddress === "")) {
+            alert('Select the ICX Address');
+            return
+        }
+
+        console.log(parsed.method);
+        console.log(parsed);
+
+        window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+            detail: {
+                type: 'REQUEST_JSON-RPC',
+                payload: parsed
+            }
+        }))
+
+    }
+
+    function register(){
+
+        if (fromAddress === ""){
+            alert('Wallet not detected. Please download ICONEX Chrome extension');
+            return
+        }
+        const callTransactionBuilder = new IconBuilder.CallTransactionBuilder;
+        const callTransactionData = callTransactionBuilder
+            .from(fromAddress)
+            .to(scoreAddress)
+            .nid(IconConverter.toBigNumber(1))
+            .timestamp((new Date()).getTime() * 1000)
+            .stepLimit(IconConverter.toBigNumber(10000000))
+            .version(IconConverter.toBigNumber(3))
+            .method('listing')
+            .params({
+                "_team": document.getElementById('_team').value,
+                "_member": document.getElementById('_member').value,
+            })
+            .build();
+
+        const scoreData = JSON.stringify({
+            "jsonrpc": "2.0",
+            "method": "icx_sendTransaction",
+            "params": IconConverter.toRawTransaction(callTransactionData),
+            "id": 50889
+        })
+
+        relayRequest(scoreData);
+    }
+
+    $( window ).on("load", function() {
+
+        anime({
+            targets: "#svg-bg",
+            opacity: 0,
+            delay: 2000,
+            duration: 10000,
+        });
+
+        anime({
+            targets: '#container',
+            opacity: 1,
+            duration: 5000,
+            delay: 1000
+        });
+
+        anime({
+            targets: '#container',
+            translateX: ["-3vw", 0],
+            translateY: ["-30vh", 0], // from 100 to 250
+            duration: 2000,
+            rotate: [anime.random(-10, -20), 0],
+            delay: 1000
+        });
+
+        window.dispatchEvent(askForAddress);
+
+        const callBuilder = new IconBuilder.CallBuilder;
+        const call = callBuilder
+            .from("hx3e770cc9cb7cb7f7a4bb6368fd4545a61f6a0ed2")
+            .to(scoreAddress)
+            .method('getCurrentStory')
+            .build();
+        const scoreData = {
+            "jsonrpc": "2.0",
+            "method": "icx_call",
+            "params": call,
+            "id": 50889
+        };
+
+        makePostCall(scoreData).success(function(data) {
+            console.log(JSON.parse(data));
+        }).fail(function(sender, message, details) {
+            console.log(details);
+        });
+    });
+
+</script>
 
 </body>
 </html>
