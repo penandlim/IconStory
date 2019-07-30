@@ -12,7 +12,8 @@
 <!--    <div class="person"><img class="person-img" src="texture/1.png"></div>-->
 </div>
 <div id="container">
-    <div id="inner"><span class="word">Hello</span> <span class="word">my</span> <span class="word">name</span></div>
+    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+    <div id="inner"></div>
 </div>
 
 <script type="text/javascript">
@@ -341,6 +342,7 @@
     });
 
     updateStoryGraphics = function(data, index, isInsert) {
+        console.log(data);
         let s = constructWordString(data.result.wordFG, data.result.wordBG, data.result.word, data.result.wordOwner, data.result.wordValue);
         let indexObj = $("#inner");
 
@@ -548,11 +550,18 @@
         anime({
             targets: ".word",
             opacity: [0, 1],
-            delay: anime.stagger(150, {start: 2000}),
+            delay: anime.stagger(150, {start: 0}),
             duration: 1000,
             complete: function(anim) {
                 $(".word").css("position", "initial");
             }
+        });
+
+        anime({
+            targets: ".lds-ellipsis",
+            opacity : [1, 0],
+            duration: 300,
+            easing: "easeOutQuad"
         });
 
         storyInitComplete = true;
@@ -639,8 +648,8 @@
         f(arg).then(response => {
             callback(response);
         }).catch(e => {
-            console.log(e)
-            if (e.includes("Pending")) {
+            console.log(e);
+            if (e.includes("Pending") || e.includes("txHash")) {
                 setTimeout(function () {
                     keepTrying(f, arg, callback);
                 }, 1000);
@@ -661,7 +670,7 @@
             Swal.fire({
                 type: "success",
                 title: "Success!",
-                text: "Your word '" + result.result.word + "' was successfully added.",
+                text: "Your word was successfully added.",
                 timer: 2000
             });
         } else {
@@ -959,18 +968,12 @@
 
     $( window ).on("load", function() {
 
-        anime({
-            targets: "#svg-bg",
-            opacity: 0,
-            delay: 2000,
-            duration: 10000,
-        });
 
         anime({
             targets: '#container',
             opacity: 1,
             duration: 2000,
-            delay: 1000,
+            delay: 100,
             easing: "linear"
         });
 
@@ -980,7 +983,7 @@
             translateY: ["-30vh", 0], // from 100 to 250
             duration: 2000,
             rotate: [anime.random(-10, -20), 0],
-            delay: 1000
+            delay: 100
         });
 
         window.dispatchEvent(checkForICONEX);
