@@ -4,8 +4,12 @@ const path = require('path');
 const request = require('request');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 5000;
+let cors = require('cors');
+
 
 const app = express();
+
+app.use(cors());
 
 let ENusers = [];
 let KOusers = [];
