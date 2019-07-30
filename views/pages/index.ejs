@@ -46,7 +46,7 @@
     const IconConverter = IconService.IconConverter;
     const IconBuilder = IconService.IconBuilder;
 
-    const scoreAddress = "cx3d574c55a86f0d98a5a24424fcc604902b81dcc4";
+    const scoreAddress = '<%- SCORE %>';
     let fromAddress = "";
 
     let recentlyEditedIndex = 0;
@@ -84,7 +84,7 @@
             data: json_data,
             crossDomain: true,
             dataType: "json",
-            contentType: "application/json;charset=utf-8"
+            contentType: "application/json"
         }).done(function(data) {
             console.log("[OWN] Got response: ");
             onJSONsuccess(data);

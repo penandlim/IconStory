@@ -4,12 +4,9 @@ const path = require('path');
 const request = require('request');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 5000;
-let cors = require('cors');
 
 
 const app = express();
-
-app.use(cors());
 
 let ENusers = [];
 let KOusers = [];
@@ -24,8 +21,8 @@ let server = app.use(express.static(path.join(__dirname, 'public')))
     .use(bodyParser.urlencoded({ extended: true })) // support encoded bodies
     .set('views', path.join(__dirname, 'views'))
     .set('view engine', 'ejs')
-    .get('/', (req, res) => res.render('pages/main', {URL: URL}))
-    .get('/en/', (req, res) => res.render('pages/index', { REGION : "en" , URL: URL}))
+    .get('/', (req, res) => res.render('pages/main', {URL: URL, SCORE:SCORE}))
+    .get('/en/', (req, res) => res.render('pages/index', { REGION : "en" , URL: URL, SCORE:SCORE}))
 //    .get('/ko/', (req, res) => res.render('pages/index', { REGION : "ko" , URL: URL}))
     .post('/api/', function(req, res) {
 
