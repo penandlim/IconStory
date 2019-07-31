@@ -14,6 +14,7 @@
 <div id="container">
     <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
     <div id="inner"></div>
+    <div class="add">+</div>
 </div>
 
 <script type="text/javascript">
@@ -34,6 +35,34 @@
     };
 
     const MAINNET_URL = '<%- URL %>';
+    let DATE = '<%- DATE %>';
+
+    let shouldLoadToday = false;
+
+    let epoch;
+
+    // Test date if it makes sense.
+
+    if (DATE === "") {
+        shouldLoadToday = true;
+    } else {
+        let m = /^\d{8}$/gm.exec(DATE);
+        if (m !== null) {
+            let datetimeS = DATE.slice(0, 4) + "-" + DATE.slice(4,6) + "-" + DATE.slice(6,8);
+            epoch = new Date(datetimeS).getTime();
+            if (isNaN(epoch)) {
+
+                shouldLoadToday = true;
+                window.location.replace("/en");
+            } else {
+                epoch = epoch / 1000;
+            }
+        } else {
+            window.location.replace("/en");
+        }
+    }
+
+
 
     let arr = window.location.href.split("/");
     const MY_URL = arr[0] + "//" + arr[2];
@@ -133,9 +162,7 @@
 
     }
 
-    //
-    // SOCKETS
-    //
+
 
     initPersonCSS = function(target) {
         let randX = Math.random() * 38 - 19;
@@ -160,206 +187,226 @@
         });
     };
 
-    socket = io("/" + region);
+    //
+    // SOCKETS
+    //
 
-    // data contains list of socket.id of people who are connected.
-    socket.on('init', function (data, editingUsers) {
-        console.log(data);
-        console.log("Total number of people on server: " + data.length);
-        numOfPeople = data.length;
+    if (shouldLoadToday) {
 
-        EditingUsers = editingUsers;
+        socket = io("/" + region);
 
-        let string = "";
-        for(let i = 0; i < numOfPeople; i++){
-            string+= generateFaceDivString(data[i])
-        }
-        $("#people").append(string);
+        // data contains list of socket.id of people who are connected.
+        socket.on('init', function (data, editingUsers) {
+            console.log(data);
+            console.log("Total number of people on server: " + data.length);
+            numOfPeople = data.length;
 
-        $(".person").each(function() {
-            initPersonCSS(this);
-        });
+            EditingUsers = editingUsers;
 
-        anime({
-            targets: ".person-connected",
-            opacity: 1,
-            translateY: [100, 0],
-            delay: anime.stagger(150, {start: 1000}),
-            duration: 1000,
-            changeBegin: function(anim) {
-                setIntervalX(notifySound, 100, numOfPeople);
-            },
-        });
+            let string = "";
+            for (let i = 0; i < numOfPeople; i++) {
+                string += generateFaceDivString(data[i])
+            }
+            $("#people").append(string);
 
-    });
+            $(".person").each(function () {
+                initPersonCSS(this);
+            });
 
-    socket.on('enter', function (data) {
-        console.log("User " + data + " entered!");
-        numOfPeople++;
-        console.log("Total number of people on server: " + numOfPeople);
-
-        let newlyAdded = $(generateFaceDivString(data)).appendTo("#people");
-
-        initPersonCSS(newlyAdded[0]);
-
-        anime({
-            targets: newlyAdded[0],
-            opacity: 1,
-            translateY: [100, 0],
-            duration: 1000,
+            anime({
+                targets: ".person-connected",
+                opacity: 1,
+                translateY: [100, 0],
+                delay: anime.stagger(150, {start: 1000}),
+                duration: 1000,
+                changeBegin: function (anim) {
+                    setIntervalX(notifySound, 100, numOfPeople);
+                },
+            });
 
         });
-        notifySound();
-    });
 
-    socket.on('exit', function (data, index) {
-        console.log("User " + data + " left... ", index);
-        numOfPeople--;
-        console.log("Total number of people on server: " + numOfPeople);
+        socket.on('enter', function (data) {
+            console.log("User " + data + " entered!");
+            numOfPeople++;
+            console.log("Total number of people on server: " + numOfPeople);
 
-        let personToRemove = $(".person-connected[data-id=\"" + data + "\"]");
-        personToRemove.removeClass("person-connected");
-        anime({
-            targets: personToRemove[0],
-            opacity: 0,
-            translateY: [0, 100],
-            duration: 500,
-            easing: "easeOutCubic",
-            complete: function(anim) {
-                personToRemove.remove();
+            let newlyAdded = $(generateFaceDivString(data)).appendTo("#people");
+
+            initPersonCSS(newlyAdded[0]);
+
+            anime({
+                targets: newlyAdded[0],
+                opacity: 1,
+                translateY: [100, 0],
+                duration: 1000,
+
+            });
+            notifySound();
+        });
+
+        socket.on('exit', function (data, index) {
+            console.log("User " + data + " left... ", index);
+            numOfPeople--;
+            console.log("Total number of people on server: " + numOfPeople);
+
+            let personToRemove = $(".person-connected[data-id=\"" + data + "\"]");
+            personToRemove.removeClass("person-connected");
+            anime({
+                targets: personToRemove[0],
+                opacity: 0,
+                translateY: [0, 100],
+                duration: 500,
+                easing: "easeOutCubic",
+                complete: function (anim) {
+                    personToRemove.remove();
+                }
+            });
+
+            if (storyInitComplete && index > -1) {
+                let indexObj = $(".word");
+                let childObj = indexObj.eq(index);
+                if (childObj) {
+                    childObj.removeClass("editing");
+                }
+            }
+
+        });
+
+        startWriting = function (index) {
+            socket.emit("startWriting", index);
+            anime({
+                targets: ".person-connected[data-id=\"" + socket.id + "\"] .typing-icon",
+                opacity: 1,
+                translateX: ["-50%", "-50%"],
+                translateY: ["20%", 0],
+                duration: 300,
+                easing: "easeOutQuad"
+            });
+        };
+
+        socket.on("startWriting", function (id, index) {
+            console.log(id + " started writing");
+            anime({
+                targets: ".person-connected[data-id=\"" + id + "\"] .typing-icon",
+                opacity: 1,
+                translateX: ["-50%", "-50%"],
+                translateY: ["20%", 0],
+                duration: 300,
+                easing: "easeOutQuad"
+            });
+
+            if (storyInitComplete) {
+                let indexObj = $(".word");
+                let childObj = indexObj.eq(index);
+                if (childObj) {
+                    childObj.addClass("editing");
+                }
+            } else {
+                EditingUsers[index] = id;
             }
         });
 
-        if (storyInitComplete && index > -1) {
-            let indexObj = $("#inner");
-            let childObj = indexObj.children().eq(index);
-            if (childObj) {
-                childObj.removeClass("editing");
+        cancelWriting = function (index) {
+            socket.emit("cancelWriting", index);
+            anime({
+                targets: ".person-connected[data-id=\"" + socket.id + "\"] .typing-icon",
+                opacity: 0,
+                translateX: ["-50%", "-50%"],
+                translateY: [0, "-40%"],
+                duration: 300,
+                easing: "easeOutQuad"
+            });
+        };
+
+        socket.on("cancelWriting", function (id, index) {
+            anime({
+                targets: ".person-connected[data-id=\"" + id + "\"] .typing-icon",
+                opacity: 0,
+                translateX: ["-50%", "-50%"],
+                translateY: [0, "-40%"],
+                duration: 300,
+                easing: "easeOutQuad"
+            });
+
+            if (storyInitComplete) {
+                let indexObj = $(".word");
+                let childObj = indexObj.eq(index);
+                if (childObj) {
+                    childObj.removeClass("editing");
+                }
+            } else {
+                EditingUsers[index] = 0;
             }
-        }
 
-    });
-
-    startWriting = function(index) {
-        socket.emit("startWriting", index);
-        anime({
-            targets: ".person-connected[data-id=\"" + socket.id + "\"] .typing-icon",
-            opacity: 1,
-            translateX: ["-50%", "-50%"],
-            translateY: ["20%", 0],
-            duration: 300,
-            easing: "easeOutQuad"
-        });
-    };
-
-    socket.on("startWriting", function(id, index) {
-        console.log(id + " started writing");
-        anime({
-            targets: ".person-connected[data-id=\"" + id + "\"] .typing-icon",
-            opacity: 1,
-            translateX: ["-50%", "-50%"],
-            translateY: ["20%", 0],
-            duration: 300,
-            easing: "easeOutQuad"
         });
 
-        if (storyInitComplete) {
-            let indexObj = $("#inner");
-            let childObj = indexObj.children().eq(index);
-            if (childObj) {
-                childObj.addClass("editing");
+        finishWriting = function (index, isInsert) {
+            socket.emit("finishWriting", index, isInsert);
+            anime({
+                targets: ".person-connected[data-id=\"" + socket.id + "\"] .typing-icon",
+                opacity: 0,
+                translateX: ["-50%", "-50%"],
+                translateY: [0, "-40%"],
+                duration: 300,
+                easing: "easeOutCubic"
+            });
+            updateStory(index, isInsert);
+        };
+
+
+        socket.on("finishWriting", function (id, index, isInsert) {
+            anime({
+                targets: ".person-connected[data-id=\"" + id + "\"] .typing-icon",
+                opacity: 0,
+                translateX: ["-50%", "-50%"],
+                translateY: [0, "-40%"],
+                duration: 300,
+                easing: "easeOutCubic"
+            });
+            updateStory(index, isInsert);
+            if (storyInitComplete) {
+                let indexObj = $(".word");
+                let childObj = indexObj.eq(index);
+                if (childObj) {
+                    childObj.removeClass("editing");
+                }
             }
-        } else {
-            EditingUsers[index] = id;
-        }
-    });
-
-    cancelWriting = function(index) {
-        socket.emit("cancelWriting", index);
-        anime({
-            targets: ".person-connected[data-id=\"" + socket.id + "\"] .typing-icon",
-            opacity: 0,
-            translateX: ["-50%", "-50%"],
-            translateY: [0, "-40%"],
-            duration: 300,
-            easing: "easeOutQuad"
         });
-    };
-
-    socket.on("cancelWriting", function(id, index) {
-        anime({
-            targets: ".person-connected[data-id=\"" + id + "\"] .typing-icon",
-            opacity: 0,
-            translateX: ["-50%", "-50%"],
-            translateY: [0, "-40%"],
-            duration: 300,
-            easing: "easeOutQuad"
-        });
-
-        if (storyInitComplete) {
-            let indexObj = $("#inner");
-            let childObj = indexObj.children().eq(index);
-            if (childObj) {
-                childObj.removeClass("editing");
-            }
-        } else {
-            EditingUsers[index] = 0;
-        }
-
-    });
-
-    finishWriting = function(index, isInsert) {
-        socket.emit("finishWriting", index, isInsert);
-        anime({
-            targets: ".person-connected[data-id=\"" + socket.id + "\"] .typing-icon",
-            opacity: 0,
-            translateX: ["-50%", "-50%"],
-            translateY: [0, "-40%"],
-            duration: 300,
-            easing: "easeOutCubic"
-        });
-        updateStory(index, isInsert);
-    };
-
-
-    socket.on("finishWriting", function(id, index, isInsert) {
-        anime({
-            targets: ".person-connected[data-id=\"" + id + "\"] .typing-icon",
-            opacity: 0,
-            translateX: ["-50%", "-50%"],
-            translateY: [0, "-40%"],
-            duration: 300,
-            easing: "easeOutCubic"
-        });
-        updateStory(index, isInsert);
-        if (storyInitComplete) {
-            let indexObj = $("#inner");
-            let childObj = indexObj.children().eq(index);
-            if (childObj) {
-                childObj.removeClass("editing");
-            }
-        }
-    });
+    }
 
     updateStoryGraphics = function(data, index, isInsert) {
         console.log(data);
         let s = constructWordString(data.result.wordFG, data.result.wordBG, data.result.word, data.result.wordOwner, data.result.wordValue);
-        let indexObj = $("#inner");
+        let indexObj = $(".word");
+        let wordsLength = indexObj.length;
 
-        if (isInsert === 0) {
-            indexObj.children().eq(index).remove();
+        if (index < 0)
+            index = 0;
+
+        if (isInsert === 1) {
+            if (indexObj.eq(index)) {
+                indexObj.eq(index).before($(s));
+            } else {
+                indexObj.eq(wordsLength - 1).after($(s));
+                index = wordsLength;
+            }
+        } else {
+            if (indexObj.eq(index)) {
+                indexObj.eq(index).replaceWith($(s));
+            } else {
+                indexObj.eq(wordsLength - 1).after($(s));
+                index = wordsLength;
+            }
         }
-        indexObj = indexObj.insertAt(index, s);
 
-        if (index >= indexObj.children().length) {
-            index = Math.max(0, indexObj.children().length - 1);
-        }
+        indexObj = $(".word");
 
-        indexObj.children().eq(index).css({"z-index": index + 1,
+        indexObj.eq(index).css({"z-index": index + 1,
         "position": "initial"});
 
         anime({
-            targets: indexObj.children().eq(index)[0],
+            targets: indexObj.eq(index)[0],
             opacity: [0,1],
             duration: 1000
         });
@@ -378,6 +425,7 @@
             case "RESPONSE_ADDRESS":
                 fromAddress = payload;
                 console.log("[ICONEX] User selected " + fromAddress);
+                Swal.close();
                 break;
             case "RESPONSE_JSON-RPC":
                 console.log("[ICONEX] Got JSON Response: ");
@@ -511,6 +559,11 @@
             fontSize = Math.min(1 + (value / DECIMAL) / 5, 2) * 5;
         }
 
+        let interactHandler = ""
+
+        if (shouldLoadToday) {
+            interactHandler = "onclick='onWordFocus(this)' " + " onblur='onWordBlur(this)' ";
+        }
 
         return "<span spellcheck=\"false\" class='word' " +
             "style='color:" + COLORS[arr[1]] + "; background-color:" + COLORS[arr[0]] + "; opacity: 0; font-size: " + fontSize + "vmin;' " +
@@ -521,11 +574,53 @@
             "data-bg='" + bgColor + "' " +
             "data-calculatedFG='" + COLORS[arr[1]] + "' " +
             "data-calculatedBG='" + COLORS[arr[0]] + "' " +
-            "onclick='onWordFocus(this)' " +
-            "onblur='onWordBlur(this)' " +
+            interactHandler +
             ">"
             + escapeHtml(word)
             + "</span>"
+    }
+
+    function prepareAddNewWord() {
+
+    }
+
+    function initOldStory(data) {
+        let story = data.result.story;
+        let storyOwner = data.result.storyOwner;
+        let storyValue = data.result.storyValue;
+        let styleFG = data.result.styleFG;
+        let styleBG = data.result.styleBG;
+
+        let length = Object.keys(story).length;
+
+        let s = ""
+        for (let i = 0; i < length; i++) {
+            s += constructWordString(styleFG[i], styleBG[i], story[i], storyOwner[i], storyValue[i]);
+        }
+        $("#inner").empty();
+        $(s).appendTo("#inner");
+        $(".word").each(function(i){
+            $(this).css("z-index", i + 1);
+        });
+
+        anime({
+            targets: ".word",
+            opacity: [0, 1],
+            delay: anime.stagger(150, {start: 0}),
+            duration: 1000,
+            complete: function(anim) {
+                $(".word").css("position", "initial");
+            }
+        });
+
+        anime({
+            targets: ".lds-ellipsis",
+            opacity : [1, 0],
+            duration: 300,
+            easing: "easeOutQuad"
+        });
+
+        storyInitComplete = true;
     }
 
     function initTodayStory(data) {
@@ -587,6 +682,7 @@
                 case CALL_ID.GET_STORY_IN_RANGE:
                     break;
                 case CALL_ID.GET_STORY_DATE:
+                    initTodayStory(data);
                     break;
                 case CALL_ID.GET_DEFAULT_BG:
                     break;
@@ -988,7 +1084,15 @@
 
         window.dispatchEvent(checkForICONEX);
         getMinAmount();
-        getStoryToday();
+
+        if (shouldLoadToday)
+            getStoryToday();
+        else
+            getStoryDate(epoch);
+
+        $(".add").click(function(){
+
+        });
 
     });
 

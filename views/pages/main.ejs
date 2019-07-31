@@ -246,8 +246,12 @@
             words = "<div class='miniStory'>" + words + "</div>";
         }
 
+        let tempDate = new Date(epochInSeconds * 1000);
+        let s = tempDate.getUTCFullYear() + "" + ("0" + (tempDate.getUTCMonth() + 1) ).slice(-2) + ("0" + tempDate.getUTCDate()).slice(-2);
 
-        return "<div class='tile " + extraClass +"' data-epoch='" + epochInSeconds +"'>" +
+        let onclickAction = " onclick='window.location.href=\"/en/" + s + "\"' ";
+
+        return "<div class='tile " + extraClass +"' data-epoch='" + epochInSeconds +"' " + onclickAction + ">" +
             "<div class='tileContent'>" +
             "<div class='tileContentCircle'>" + words + "</div>" +
             "<div class='miniDate'>" + date + "</div>" +

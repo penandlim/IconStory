@@ -34,21 +34,24 @@ body {
 
 .word {
     background-color: white;
-    transition: background-color, color 0.3s;
+    transition: all 0.3s ease-out, font-size 0s, padding 0s, line-height 0s;
     padding: 1vmin;
     font-size: 3vmin;
-    border-color: white;
-    display: inline;
+    display: inline-block;
     word-wrap: break-word;
     max-width: 100%;
     font-weight: 900;
     position: relative;
-    line-height: 10vmin;
+    line-height: 5vmin;
+}
+
+.word:hover{
+    transform: scale(1.1);
 }
 
 .editing {
-    transition: background-color, color 0.3s;
-    background-color: grey!important;
+    filter: blur(0.3vmin) grayscale(1);
+    cursor: not-allowed;
 }
 
 .editing:hover {
@@ -115,6 +118,22 @@ body {
     height: 100vh;
     background: transparent;
 }
+
+
+.add {
+    position: absolute;
+    right: 3vmin;
+    font-size: 10vmin;
+    color: white;
+    bottom: 0;
+    cursor: pointer;
+    transition: transform 0.3s ease-out;
+}
+
+.add:hover {
+    transform: scale(1.5);
+}
+
 
 .lds-ellipsis {
     display: inline-block;

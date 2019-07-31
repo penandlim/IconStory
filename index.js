@@ -5,6 +5,7 @@ const request = require('request');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 5000;
 
+const keys = require('./keys');
 
 const app = express();
 
@@ -13,21 +14,19 @@ let KOusers = [];
 
 let EditingUsers = new Array(16).fill(0);
 
-let URL = "https://bicon.net.solidwallet.io/api/v3"; // TESTNET
-let SCORE = "cx3d574c55a86f0d98a5a24424fcc604902b81dcc4"; // TESTNET
-
 let server = app.use(express.static(path.join(__dirname, 'public')))
     .use(bodyParser.json()) // support json encoded bodies
     .use(bodyParser.urlencoded({ extended: true })) // support encoded bodies
     .set('views', path.join(__dirname, 'views'))
     .set('view engine', 'ejs')
-    .get('/', (req, res) => res.render('pages/main', {URL: URL, SCORE:SCORE}))
-    .get('/en/', (req, res) => res.render('pages/index', { REGION : "en" , URL: URL, SCORE:SCORE}))
+    .get('/', (req, res) => res.render('pages/main', {URL: keys.URL, SCORE:keys.SCORE}))
+    .get('/en/', (req, res) => res.render('pages/index', { REGION : "en" , URL: keys.URL, SCORE:keys.SCORE, DATE: ""}))
+    .get('/en/:date/', (req, res) => res.render('pages/index', { REGION : "en" , URL: keys.URL, SCORE:keys.SCORE, DATE: req.params.date}))
 //    .get('/ko/', (req, res) => res.render('pages/index', { REGION : "ko" , URL: URL}))
     .post('/api/', function(req, res) {
 
         request.post({
-            url:     URL,
+            url:     keys.URL,
             body:    req.body,
             json: true
         }, function(error, response, body){
