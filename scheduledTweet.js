@@ -1,14 +1,17 @@
-let Twit = require('twit');
-let request = require('request');
-let keys = require("./keys");
+const Twit = require('twit');
+const request = require('request');
+const keys = require("./keys");
+const BitlyClient  = require('bitly').BitlyClient;
+
+const bitly = new BitlyClient(keys.bitly_access_token);
 
 const SECONDS_IN_DAY = 86400;
 
 let T = new Twit({
-    consumer_key:         '...',
-    consumer_secret:      '...',
-    access_token:         '...',
-    access_token_secret:  '...',
+    consumer_key:         keys.consumer_key,
+    consumer_secret:      keys.consumer_secret,
+    access_token:         keys.access_token,
+    access_token_secret:  keys.access_token_secret,
     timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
     strictSSL:            true,     // optional - requires SSL certificates to be valid.
 });
@@ -46,10 +49,28 @@ request(options, function (error, response, body) {
 
         console.log(s); // Print the shortened url.
 
-        T.post('statuses/update', { status: s }, function(err, data, response) {
-            console.log(data)
-        });
+        let newDate = new Date(yesterdayTime * 1000);
+        let newURL = "https://IconStory.online/en/" + newDate.getUTCFullYear() + ("0" +(newDate.getUTCMonth() + 1)).slice(-2) + ("0" + newDate.getUTCDate()).slice(-2);
+
+        bitly
+            .shorten(newURL)
+            .then(function(result) {
+                console.log(result);
+                s += "\n" + result;
+                postTweet(s);
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
     }
 });
+
+function postTweet(s) {
+    T.post('statuses/update', { status: s }, function(err, data, response) {
+        console.log(data);
+    });
+}
+
+
 
 
