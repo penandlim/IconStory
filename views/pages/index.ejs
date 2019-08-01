@@ -22,6 +22,8 @@
 <script type="text/javascript">
     $(function() {
 
+        const NID = 3;
+
         const SECONDS_IN_DAY = 86400;
 
         const CALL_ID = {
@@ -759,6 +761,7 @@
             Swal.fire({
                 html: addWordBlock + "Would you like to add a new word to the story for <b>0 ICX</b>?",
                 showCancelButton: true,
+                allowOutsideClick: false,
                 confirmButtonText: 'Yes, add it',
                 cancelButtonText: 'Cancel',
             }).then((result) => {
@@ -769,10 +772,11 @@
                     // Read more about handling dismissals
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    xx.focus();
+                    xx.off("blur");
                     xx.on("blur", function () {
                         onNewWordBlur(xx);
                     });
+                    xx.focus();
                 }
             })
         };
@@ -1056,19 +1060,14 @@
                         text: 'We have requested a transaction. Please follow the instruction and sign the transaction on the ICONex popup.',
                         showCancelButton: true,
                         cancelButtonText: 'Cancel',
-                        showConfirmButton: false
+                        showConfirmButton: false,
+                        allowOutsideClick: false
 
                     }).then((result) => {
                         if (
                             // Read more about handling dismissals
                             result.dismiss === Swal.DismissReason.cancel
                         ) {
-
-                            if (elementWaiting.hasClass("word")) {
-                                onWordBlur(elementWaiting[0]);
-                            } else if (elementWaiting.id === "newword") {
-                                onNewWordBlur(elementWaiting);
-                            }
                             elementWaiting.blur();
                         }
                     });
@@ -1212,7 +1211,7 @@
                 .from(fromAddress)
                 .to(scoreAddress)
                 .value(value)
-                .nid(IconConverter.toBigNumber(3))
+                .nid(IconConverter.toBigNumber(NID))
                 .timestamp((new Date()).getTime() * 1000)
                 .stepLimit(IconConverter.toBigNumber(10000000))
                 .version(IconConverter.toBigNumber(3))
@@ -1242,7 +1241,7 @@
                 .from(fromAddress)
                 .to(scoreAddress)
                 .value(value)
-                .nid(IconConverter.toBigNumber(3))
+                .nid(IconConverter.toBigNumber(NID))
                 .timestamp((new Date()).getTime() * 1000)
                 .stepLimit(IconConverter.toBigNumber(10000000))
                 .version(IconConverter.toBigNumber(3))
@@ -1276,7 +1275,7 @@
                 .from(fromAddress)
                 .to(scoreAddress)
                 .value(value)
-                .nid(IconConverter.toBigNumber(3))
+                .nid(IconConverter.toBigNumber(NID))
                 .timestamp((new Date()).getTime() * 1000)
                 .stepLimit(IconConverter.toBigNumber(10000000))
                 .version(IconConverter.toBigNumber(3))
