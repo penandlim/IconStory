@@ -17,7 +17,8 @@
     "request": "^2.88.0",
     "socket.io": "^2.2.0",
     "turl": "^1.1.2",
-    "twit": "^2.2.11"
+    "twit": "^2.2.11",
+    "express-sslify": "latest"
   },
   "devDependencies": {
     "request": "^2.81.0",
