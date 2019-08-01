@@ -85,6 +85,9 @@ body {
     transition: padding 0.4s;
     opacity: 0;
 }
+#about:hover {
+    cursor: pointer;
+}
 
 #currentstory:hover {
     padding: 2rem;

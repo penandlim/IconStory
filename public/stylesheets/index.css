@@ -134,6 +134,9 @@ body {
     background: transparent;
 }
 
+#about:hover {
+    cursor: pointer;
+}
 
 .add {
     display: none;
