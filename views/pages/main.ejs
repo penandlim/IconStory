@@ -3,6 +3,7 @@
 <head>
     <% include ../partials/header.ejs %>
     <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
+    <title>IconStory Online</title>
 </head>
 <body>
 <div id="container">
@@ -251,7 +252,7 @@
 
         let onclickAction = " onclick='window.location.href=\"/en/" + s + "\"' ";
 
-        return "<div class='tile " + extraClass +"' data-epoch='" + epochInSeconds +"' " + onclickAction + ">" +
+        return "<div class='tile tileZoom " + extraClass +"' data-epoch='" + epochInSeconds +"' " + onclickAction + ">" +
             "<div class='tileContent'>" +
             "<div class='tileContentCircle'>" + words + "</div>" +
             "<div class='miniDate'>" + date + "</div>" +
@@ -381,7 +382,8 @@
             $(".tile").css({
                 "margin-top" : margin,
                 "margin-bottom" : margin
-            }).hover(function(){
+            });
+            $(".tileZoom").hover(function(){
                 let t = $(this);
                 if (t.css("opacity") >= 1 && !t.hasClass("current")) {
                     anime.remove(this);

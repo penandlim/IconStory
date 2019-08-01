@@ -14,7 +14,8 @@ let T = new Twit({
     strictSSL:            true,     // optional - requires SSL certificates to be valid.
 });
 
-let currentTime = (new Date().getTime() / 1000);
+let d = new Date();
+let currentTime = (d.getTime() / 1000);
 let yesterdayTime = ((currentTime - currentTime % SECONDS_IN_DAY) - SECONDS_IN_DAY) + "";
 
 let options = {
@@ -43,6 +44,10 @@ request(options, function (error, response, body) {
         let s = "";
         for (let i = 0; i < count; i++) {
             s += body.result.story[i] + " ";
+        }
+        if (s === "") {
+            console.log(d.getUTCFullYear() + "-" + d.getUTCMonth() + "-" + d.getUTCDate() + ": NO ONE POSTED!!" );
+            return;
         }
 
         console.log(s); // Print the shortened url.

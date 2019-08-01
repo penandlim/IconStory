@@ -4,14 +4,15 @@ const path = require('path');
 const request = require('request');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 5000;
-const enforce = require('express-sslify');
-
 
 const keys = require('./keys');
 
 const app = express();
 
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
+if (app.settings.env !== "development") {
+    const enforce = require('express-sslify');
+    app.use(enforce.HTTPS({trustProtoHeader: true}));
+}
 
 let ENusers = [];
 let KOusers = [];
