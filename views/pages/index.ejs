@@ -602,9 +602,8 @@
                     xx.off("keydown");
                     xx.on('keydown', function (e) {
                         if (e.which === 13 && xx.text() !== "") {
-                            xx.removeAttr('onblur')  // Removes 'onclick' property if found
-                                .off('blur');          // Removes other events if found
 
+                            xx.off("blur");
                             elementWaiting = xx;
                             triggerReplaceWord(xx, xx.attr("data-newword"));
                             //Prevent insertion of a return
@@ -663,6 +662,13 @@
                     xx.text(xx.text().replace(/\s/g, ""));
                     if (xx.text().length > 16) {
                         xx.text(xx.text().slice(0, 16));
+                        anime({
+                            targets: ".background",
+                            backgroundColor: ["#ff4444", backgroundDiv.attr("data-bgColor")],
+                            easing: "easeOutCubic",
+                            duration: 400
+                        });
+                        errorSound.play("ding");
                     }
                     let arr = calculateStyle(xx.text());
                     xx.css({
@@ -679,9 +685,7 @@
             xx.on('keydown', function (e) {
                 if (e.which === 13 && xx.text() !== "") {
 
-                    xx.prop('onblur', null)  // Removes 'onclick' property if found
-                        .off('blur');          // Removes other events if found
-
+                    xx.off('blur');          // Removes other events if found
                     elementWaiting = xx;
 
                     triggerAddWord(xx);
@@ -743,10 +747,12 @@
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
 
-                    xx.focus();
+
+                    xx.off("blur");
                     xx.on("blur", function () {
                         onWordBlur(xx[0]);
                     });
+                    xx.focus();
                 }
             })
         };
@@ -798,7 +804,7 @@
             if (value === 0) {
                 fontSize = 5;
             } else {
-                fontSize = Math.min(1 + (value / DECIMAL), 3) * 5;
+                fontSize = fontSize + Math.min((value / DECIMAL), 3) * 2;
                 padding = fontSize / 10;
             }
 
@@ -991,7 +997,7 @@
                     type: 'error',
                     title: 'Oops...',
                     text: result.failure.message
-                })
+                });
             }
         }
 
@@ -1068,7 +1074,12 @@
                             // Read more about handling dismissals
                             result.dismiss === Swal.DismissReason.cancel
                         ) {
-                            elementWaiting.blur();
+                            if (elementWaiting.hasClass("word"))
+                                onWordBlur(elementWaiting[0]);
+                            else if (elementWaiting.attr("id") === "newword") {
+                                onNewWordBlur(elementWaiting);
+                            }
+                            elementWaiting = null;
                         }
                     });
                 }
