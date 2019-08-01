@@ -795,7 +795,7 @@
                 case CALL_ID.REPLACE_WORD:
                     Swal.close();
                     Swal.fire({
-                        html: "Pending transaction...\n txid: " + data.result ,
+                        html: "Pending transaction...<br>txid: " + data.result ,
                         allowOutsideClick: false,
                         onBeforeOpen: () => {
                             Swal.showLoading();
@@ -806,8 +806,7 @@
                 case CALL_ID.ADD_NORMAL_WORD:
                     Swal.close();
                     Swal.fire({
-                        html: "Pending transaction...\n txid: " + data.result ,
-                        footer: "txid: " + data.result,
+                        html: "Pending transaction...<br>txid: " + data.result ,
                         allowOutsideClick: false,
                         onBeforeOpen: () => {
                             Swal.showLoading();
