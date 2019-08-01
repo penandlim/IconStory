@@ -32,11 +32,11 @@ body {
     word-wrap: break-word;
 }
 
-.word {
+.word, #newword {
     background-color: white;
     transition: all 0.3s ease-out, font-size 0s, padding 0s, line-height 0s;
     padding: 1vmin;
-    font-size: 3vmin;
+    font-size: 5vmin;
     display: inline-block;
     word-wrap: break-word;
     max-width: 100%;
@@ -45,7 +45,17 @@ body {
     line-height: 5vmin;
 }
 
-.word:hover{
+.preview {
+    color: #FFFFFF;
+    background-color: #000000;
+    font-weight: 900;
+    display: inline-block;
+    padding: 1%;
+    font-size: 3vmin;
+    margin: 1%;
+}
+
+.word:hover, #newword:hover{
     transform: scale(1.1);
 }
 
@@ -90,6 +100,11 @@ body {
     width: 100vw;
     height: 100vh;
     background: #EEE;
+    -webkit-transition: background-color 0.5s;
+    -moz-transition: background-color 0.5s;
+    -ms-transition: background-color 0.5s;
+    -o-transition: background-color 0.5s;
+    transition: background-color 0.5s;
 }
 
 .person {
@@ -121,6 +136,7 @@ body {
 
 
 .add {
+    display: none;
     position: absolute;
     right: 3vmin;
     font-size: 10vmin;
@@ -128,10 +144,16 @@ body {
     bottom: 0;
     cursor: pointer;
     transition: transform 0.3s ease-out;
+    opacity: 0;
+    transform: scale(1.5);
 }
 
 .add:hover {
-    transform: scale(1.5);
+    transform: scale(2);
+}
+
+a {
+    color: white;
 }
 
 

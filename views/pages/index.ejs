@@ -19,6 +19,9 @@
 
 <script type="text/javascript">
 
+
+    const SECONDS_IN_DAY = 86400;
+
     const CALL_ID = {
         "GET_STORY_TODAY" : 1,
         "GET_STORY_IN_RANGE" : 2,
@@ -56,6 +59,11 @@
                 window.location.replace("/en");
             } else {
                 epoch = epoch / 1000;
+                let epochNow = (new Date().getTime() / 1000);
+                epochNow = epochNow - epochNow % SECONDS_IN_DAY;
+                if (epoch ===  epochNow) {
+                    shouldLoadToday = true;
+                }
             }
         } else {
             window.location.replace("/en");
@@ -88,6 +96,8 @@
     const DECIMAL = 10 ** 18;
 
     let minAmount = 0;
+
+    let elementWaiting;
 
 
     jQuery.fn.insertAt = function(index, element) {
@@ -192,6 +202,8 @@
     //
 
     if (shouldLoadToday) {
+        $(".background").css("background-color", "peachpuff");
+        $(".add").css("display", "block");
 
         socket = io("/" + region);
 
@@ -266,7 +278,7 @@
             if (storyInitComplete && index > -1) {
                 let indexObj = $(".word");
                 let childObj = indexObj.eq(index);
-                if (childObj) {
+                if (childObj.length > 0) {
                     childObj.removeClass("editing");
                 }
             }
@@ -286,7 +298,7 @@
         };
 
         socket.on("startWriting", function (id, index) {
-            console.log(id + " started writing");
+            console.log(id + " started writing on " + index);
             anime({
                 targets: ".person-connected[data-id=\"" + id + "\"] .typing-icon",
                 opacity: 1,
@@ -296,14 +308,16 @@
                 easing: "easeOutQuad"
             });
 
-            if (storyInitComplete) {
-                let indexObj = $(".word");
-                let childObj = indexObj.eq(index);
-                if (childObj) {
-                    childObj.addClass("editing");
+            if (index > -1 && index < 16) {
+                if (storyInitComplete) {
+                    let indexObj = $(".word");
+                    let childObj = indexObj.eq(index);
+                    if (childObj.length > 0) {
+                        childObj.addClass("editing");
+                    }
+                } else {
+                    EditingUsers[index] = id;
                 }
-            } else {
-                EditingUsers[index] = id;
             }
         });
 
@@ -320,6 +334,7 @@
         };
 
         socket.on("cancelWriting", function (id, index) {
+            console.log(id + "canceled writing on " + index);
             anime({
                 targets: ".person-connected[data-id=\"" + id + "\"] .typing-icon",
                 opacity: 0,
@@ -328,17 +343,17 @@
                 duration: 300,
                 easing: "easeOutQuad"
             });
-
-            if (storyInitComplete) {
-                let indexObj = $(".word");
-                let childObj = indexObj.eq(index);
-                if (childObj) {
-                    childObj.removeClass("editing");
+            if (index > -1 && index < 16) {
+                if (storyInitComplete) {
+                    let indexObj = $(".word");
+                    let childObj = indexObj.eq(index);
+                    if (childObj.length > 0) {
+                        childObj.removeClass("editing");
+                    }
+                } else {
+                    EditingUsers[index] = 0;
                 }
-            } else {
-                EditingUsers[index] = 0;
             }
-
         });
 
         finishWriting = function (index, isInsert) {
@@ -368,7 +383,7 @@
             if (storyInitComplete) {
                 let indexObj = $(".word");
                 let childObj = indexObj.eq(index);
-                if (childObj) {
+                if (childObj.length > 0) {
                     childObj.removeClass("editing");
                 }
             }
@@ -378,6 +393,7 @@
     updateStoryGraphics = function(data, index, isInsert) {
         console.log(data);
         let s = constructWordString(data.result.wordFG, data.result.wordBG, data.result.word, data.result.wordOwner, data.result.wordValue);
+        console.log(s);
         let indexObj = $(".word");
         let wordsLength = indexObj.length;
 
@@ -385,14 +401,19 @@
             index = 0;
 
         if (isInsert === 1) {
-            if (indexObj.eq(index)) {
+            // Inserted and its first word of the day
+            if (indexObj.length === 0) {
+                let inner = $("#inner");
+                inner.prepend($(s));
+            }
+            else if (indexObj.eq(index).length > 0) {
                 indexObj.eq(index).before($(s));
             } else {
                 indexObj.eq(wordsLength - 1).after($(s));
                 index = wordsLength;
             }
         } else {
-            if (indexObj.eq(index)) {
+            if (indexObj.eq(index).length > 0) {
                 indexObj.eq(index).replaceWith($(s));
             } else {
                 indexObj.eq(wordsLength - 1).after($(s));
@@ -410,6 +431,8 @@
             opacity: [0,1],
             duration: 1000
         });
+
+        tippy('[data-tippy-content]');
     }
 
     window.addEventListener("ICONEX_RELAY_RESPONSE", eventHandler, true);
@@ -446,7 +469,11 @@
         }
         else {
             if (xx.hasClass("meEditing")) {
-
+                xx.removeAttr('onblur')  // Removes 'onclick' property if found
+                .off('blur');          // Removes other events if found
+                xx.on("blur", function() {
+                    onWordBlur(x);
+                });
 
             }
             else {
@@ -456,6 +483,7 @@
                 xx.attr("data-newword", xx.attr("data-word"));
                 xx.css("text-decoration", "underline");
                 xx.css("position", "initial");
+                xx.off("input");
                 xx.on('input', function(e) {
                     if (xx.text() !== "") {
                         xx.text(xx.text().replace(/\s/g, ""));
@@ -473,8 +501,13 @@
                         placeCaretAtEnd(x);
                     }
                 });
+                xx.off("keydown");
                 xx.on('keydown', function(e) {
                     if (e.which === 13) {
+                        xx.removeAttr('onblur')  // Removes 'onclick' property if found
+                        .off('blur');          // Removes other events if found
+
+                        elementWaiting = xx;
                         triggerReplaceWord(xx, xx.attr("data-newword"));
                         //Prevent insertion of a return
                         //You could do other things here, for example
@@ -492,36 +525,6 @@
             }
         }
     }
-
-    triggerReplaceWord = function(el, newWord) {
-        let value = parseInt(el.attr("data-value"));
-        let needValue = value * 1.1001;
-        if (needValue === 0)
-            needValue = minAmount;
-
-        Swal.fire({
-            type: 'question',
-            title: 'Replace an existing word',
-            text: 'You need at least ' + (needValue / DECIMAL) + " ICX to replace this word to '" + newWord + "'. Would you like to continue?",
-            showCancelButton: true,
-            confirmButtonText: 'Yes, replace it',
-            cancelButtonText: 'Cancel',
-        }).then((result) => {
-            if (result.value) {
-                replaceWord(el.index(), newWord, needValue);
-
-            } else if (
-                // Read more about handling dismissals
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                el.text(el.attr("data-word"));
-                el.css({
-                    "background-color": el.attr("data-calculatedBG"),
-                    "color": el.attr("data-calculatedFG")
-                });
-            }
-        })
-    };
 
     function onWordBlur(x) {
         let jEl = $(x);
@@ -542,7 +545,135 @@
         }
     }
 
+    function onNewWordCreated(xx) {
+
+
+        xx.attr('contenteditable','true');
+
+        xx.focus();
+
+        xx.css("text-decoration", "underline");
+        xx.css("position", "initial");
+        xx.off("input");
+        xx.on('input', function(e) {
+            if (xx.text() !== "") {
+                xx.text(xx.text().replace(/\s/g, ""));
+                if (xx.text().length > 16) {
+                    xx.text(xx.text().slice(0, 16));
+                }
+                let arr = calculateStyle(xx.text());
+                xx.css({
+                    "background-color": COLORS[arr[0]],
+                    "color": COLORS[arr[1]]
+                });
+                if (xx.text() !== xx.attr("data-word")) {
+                    xx.attr("data-newword", xx.text());
+                }
+                placeCaretAtEnd(xx[0]);
+            }
+        });
+        xx.off("keydown");
+        xx.on('keydown', function(e) {
+            if (e.which === 13) {
+
+                xx.prop('onblur', null)  // Removes 'onclick' property if found
+                .off('blur');          // Removes other events if found
+
+                elementWaiting = xx;
+
+                triggerAddWord(xx);
+
+                return false;
+            }
+        });
+        startWriting(100);
+        console.log("focus", xx);
+        xx.on('blur',
+            function() {
+                onNewWordBlur(xx);
+            });
+    }
+
+    function onNewWordBlur(xx) {
+        console.log("blur", xx);
+        cancelWriting(100);
+
+        xx.text("");
+        xx.css({
+            "background-color": "#fff",
+            "color": "#000"
+        });
+        xx.css("text-decoration", "none");
+        setTimeout(function() {
+            xx.attr("contenteditable", false);
+            xx.remove();
+        }, 200);
+    }
+
+    triggerReplaceWord = function(xx, newWord) {
+        let value = parseInt(xx.attr("data-value"));
+        let needValue = value * 1.1001;
+        if (needValue === 0)
+            needValue = minAmount;
+
+        let replacingWordBlock = "<div class='preview' style='color: " +
+            xx.css("color") + " ; background-color: " +
+            xx.css("background-color") + " ;'>" + xx.text() +
+            "</div><br><br>"
+
+        Swal.fire({
+            html: replacingWordBlock + "Would you like to add this word for <b>" + (needValue / DECIMAL) + " ICX</b>?",
+            showCancelButton: true,
+            confirmButtonText: 'Yes, replace it',
+            cancelButtonText: 'Cancel',
+        }).then((result) => {
+            if (result.value) {
+                replaceWord(xx.index(), newWord, needValue);
+
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+
+                xx.focus();
+                xx.on("blur", function() {
+                   onWordBlur(xx[0]);
+                });
+            }
+        })
+    };
+
+    triggerAddWord = function(xx) {
+
+        let addWordBlock = "<div class='preview' style='color: " +
+            xx.css("color") + " ; background-color: " +
+            xx.css("background-color") + " ;'>" + xx.text() +
+            "</div><br><br>"
+
+        Swal.fire({
+            html: addWordBlock + "Would you like to add a new word to the story for <b>0 ICX</b>?" ,
+            showCancelButton: true,
+            confirmButtonText: 'Yes, add it',
+            cancelButtonText: 'Cancel',
+        }).then((result) => {
+            if (result.value) {
+                addNormalWord(100, xx.text(), 0);
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                xx.focus();
+                xx.on("blur", onNewWordBlur(xx));
+            }
+        })
+    };
+
+
+
+
     function constructWordString(fgColor, bgColor, word, owner, value) {
+        owner = "h" + owner.slice(1);
+
         fgColor = "#" + fgColor.toString(16).substr(2);
         bgColor = "#" + bgColor.toString(16).substr(2);
 
@@ -565,6 +696,10 @@
             interactHandler = "onclick='onWordFocus(this)' " + " onblur='onWordBlur(this)' ";
         }
 
+        let tippyString = "<a target=\"_blank\" href=\"https://tracker.icon.foundation/address/" + owner + "\">" + owner + "</a>" +
+            "\n" +
+            (value / DECIMAL).toFixed(3) + " ICX";
+
         return "<span spellcheck=\"false\" class='word' " +
             "style='color:" + COLORS[arr[1]] + "; background-color:" + COLORS[arr[0]] + "; opacity: 0; font-size: " + fontSize + "vmin;' " +
             "data-owner='" + owner + "' " +
@@ -574,54 +709,14 @@
             "data-bg='" + bgColor + "' " +
             "data-calculatedFG='" + COLORS[arr[1]] + "' " +
             "data-calculatedBG='" + COLORS[arr[0]] + "' " +
+            "data-tippy-content='" + tippyString + "' "+
+            "data-tippy-interactive=\"true\" " +
             interactHandler +
             ">"
             + escapeHtml(word)
             + "</span>"
     }
 
-    function prepareAddNewWord() {
-
-    }
-
-    function initOldStory(data) {
-        let story = data.result.story;
-        let storyOwner = data.result.storyOwner;
-        let storyValue = data.result.storyValue;
-        let styleFG = data.result.styleFG;
-        let styleBG = data.result.styleBG;
-
-        let length = Object.keys(story).length;
-
-        let s = ""
-        for (let i = 0; i < length; i++) {
-            s += constructWordString(styleFG[i], styleBG[i], story[i], storyOwner[i], storyValue[i]);
-        }
-        $("#inner").empty();
-        $(s).appendTo("#inner");
-        $(".word").each(function(i){
-            $(this).css("z-index", i + 1);
-        });
-
-        anime({
-            targets: ".word",
-            opacity: [0, 1],
-            delay: anime.stagger(150, {start: 0}),
-            duration: 1000,
-            complete: function(anim) {
-                $(".word").css("position", "initial");
-            }
-        });
-
-        anime({
-            targets: ".lds-ellipsis",
-            opacity : [1, 0],
-            duration: 300,
-            easing: "easeOutQuad"
-        });
-
-        storyInitComplete = true;
-    }
 
     function initTodayStory(data) {
         let story = data.result.story;
@@ -649,6 +744,10 @@
             duration: 1000,
             complete: function(anim) {
                 $(".word").css("position", "initial");
+                anime({
+                    targets: ".add",
+                    opacity: 1
+                });
             }
         });
 
@@ -660,7 +759,8 @@
         });
 
         storyInitComplete = true;
-        processEditingUsers()
+        tippy('[data-tippy-content]');
+        processEditingUsers();
     }
 
     function processEditingUsers() {
@@ -694,8 +794,7 @@
                 case CALL_ID.REPLACE_WORD:
                     Swal.close();
                     Swal.fire({
-                        text: "Pending transaction..." ,
-                        footer: "txid: " + data.result,
+                        html: "Pending transaction...\n txid: " + data.result ,
                         allowOutsideClick: false,
                         onBeforeOpen: () => {
                             Swal.showLoading();
@@ -706,7 +805,7 @@
                 case CALL_ID.ADD_NORMAL_WORD:
                     Swal.close();
                     Swal.fire({
-                        text: "Pending transaction..." ,
+                        html: "Pending transaction...\n txid: " + data.result ,
                         footer: "txid: " + data.result,
                         allowOutsideClick: false,
                         onBeforeOpen: () => {
@@ -760,6 +859,7 @@
 
     onNormalWordAdded = function(result) {
         Swal.close();
+        $("#newword").remove();
         if (result.status === 1) {
             console.log(result);
             finishWriting(recentlyEditedIndex, true);
@@ -767,7 +867,9 @@
                 type: "success",
                 title: "Success!",
                 text: "Your word was successfully added.",
-                timer: 2000
+                timer: 1500,
+                showConfirmButton: false
+
             });
         } else {
             Swal.fire({
@@ -838,7 +940,23 @@
                     type: 'info',
                     title: "Sending transaction...",
                     text: 'We have requested a transaction. Please follow the instruction and sign the transaction on the ICONex popup.',
-                    footer: "Our SCORE implements Fee 2.0 with 100% proportion, meaning you don't pay any transaction fee."
+                    showCancelButton: true,
+                    cancelButtonText: 'Cancel',
+                    showConfirmButton: false
+
+                }).then((result) => {
+                    if (
+                        // Read more about handling dismissals
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+
+                        if ( elementWaiting.hasClass("word") ) {
+                            onWordBlur(elementWaiting[0]);
+                        } else if (elementWaiting.id === "newword") {
+                            onNewWordBlur(elementWaiting);
+                        }
+                        elementWaiting.blur();
+                    }
                 });
             }
 
@@ -931,8 +1049,7 @@
                 Swal.fire({
                     type: 'warning',
                     title: "ICX Address not selected",
-                    text: 'Please choose your ICX Address from your ICONEX extension.',
-                    timer: 5000
+                    text: 'Please choose your ICX Address from your ICONEX extension.'
                 });
                 window.dispatchEvent(askForAddress);
                 return false;
@@ -1061,6 +1178,14 @@
         makeGoodCall(scoreData);
     }
 
+    function prepareAddNewWord() {
+        $("#newword").remove();
+        if(!checkForICONex())
+            return;
+        let xx = $("<span spellcheck=\"false\" id='newword'></span>").appendTo("#inner");
+        onNewWordCreated(xx);
+    }
+
 
     $( window ).on("load", function() {
 
@@ -1091,8 +1216,10 @@
             getStoryDate(epoch);
 
         $(".add").click(function(){
-
+            prepareAddNewWord();
         });
+
+
 
     });
 

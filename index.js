@@ -73,6 +73,8 @@ io_english.on('connection', function(socket){
         if (index < EditingUsers.length) {
             EditingUsers[index] = socket.id;
             socket.broadcast.emit('startWriting', socket.id, index);
+        } else if (index >= EditingUsers.length) {
+            socket.broadcast.emit('startWriting', socket.id, index);
         }
     });
 

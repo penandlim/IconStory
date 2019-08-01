@@ -1,9 +1,7 @@
 const Twit = require('twit');
 const request = require('request');
 const keys = require("./keys");
-const BitlyClient  = require('bitly').BitlyClient;
-
-const bitly = new BitlyClient(keys.bitly_access_token);
+const turl = require('turl');
 
 const SECONDS_IN_DAY = 86400;
 
@@ -50,18 +48,15 @@ request(options, function (error, response, body) {
         console.log(s); // Print the shortened url.
 
         let newDate = new Date(yesterdayTime * 1000);
-        let newURL = "https://IconStory.online/en/" + newDate.getUTCFullYear() + ("0" +(newDate.getUTCMonth() + 1)).slice(-2) + ("0" + newDate.getUTCDate()).slice(-2);
+        let newURL = "https://www.iconstory.online/en/" + newDate.getUTCFullYear() + ("0" +(newDate.getUTCMonth() + 1)).slice(-2) + ("0" + newDate.getUTCDate()).slice(-2);
 
-        bitly
-            .shorten(newURL)
-            .then(function(result) {
-                console.log(result);
-                s += "\n" + result;
-                postTweet(s);
-            })
-            .catch(function(error) {
-                console.error(error);
-            });
+        turl.shorten(newURL).then((res) => {
+            s += "\n" + res;
+            postTweet(s);
+        }).catch((err) => {
+            console.log(err);
+            postTweet(s);
+        });
     }
 });
 
