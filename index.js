@@ -39,6 +39,7 @@ let server = app.use(express.static(path.join(__dirname, 'public')))
         });
 
     })
+    .get('*', (req, res) => res.render('pages/main', {URL: keys.URL, SCORE:keys.SCORE}))
     .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 let sio = io.listen(server);
