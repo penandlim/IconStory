@@ -516,6 +516,7 @@
                 xx.css("position", "initial");
                 xx.off("input");
                 xx.on('input', function(e) {
+                    placeEnterSign(xx);
                     if (xx.text() !== "") {
                         xx.text(xx.text().replace(/\s/g, ""));
                         if (xx.text().length > 16) {
@@ -534,7 +535,7 @@
                 });
                 xx.off("keydown");
                 xx.on('keydown', function(e) {
-                    if (e.which === 13) {
+                    if (e.which === 13 && xx.text() !=="") {
                         xx.removeAttr('onblur')  // Removes 'onclick' property if found
                         .off('blur');          // Removes other events if found
 
@@ -590,6 +591,7 @@
         xx.css("position", "initial");
         xx.off("input");
         xx.on('input', function(e) {
+            placeEnterSign(xx);
             if (xx.text() !== "") {
                 xx.text(xx.text().replace(/\s/g, ""));
                 if (xx.text().length > 16) {
@@ -608,7 +610,7 @@
         });
         xx.off("keydown");
         xx.on('keydown', function(e) {
-            if (e.which === 13) {
+            if (e.which === 13 && xx.text() !=="") {
 
                 xx.prop('onblur', null)  // Removes 'onclick' property if found
                 .off('blur');          // Removes other events if found
