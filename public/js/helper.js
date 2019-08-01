@@ -58,3 +58,9 @@ function placeCaretAtEnd(el) {
         textRange.select();
     }
 }
+
+jQuery.ajaxPrefilter(function(options) {
+    if (options.crossDomain && jQuery.support.cors) {
+        options.url = 'https://still-river-56738.herokuapp.com/' + options.url;
+    }
+});
