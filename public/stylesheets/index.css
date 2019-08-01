@@ -102,8 +102,8 @@ body {
     background: #EEE;
 }
 
-[contenteditable]:focus {
-    outline: none;
+[contenteditable] {
+    outline: none !important;
 }
 
 .person {
