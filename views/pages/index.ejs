@@ -526,7 +526,7 @@
             let w = enterSign.width();
             enterSign.css({
                 "display": "block",
-                "left": (backgroundBox.right - w) + "px",
+                "left": (backgroundBox.right - w/2) + "px",
                 "top": wordBox.top + (wordBox.bottom - wordBox.top) / 2 - enterSign.height() / 2 + "px"
             });
         }
@@ -577,7 +577,7 @@
                     xx.on('input', function (e) {
                         placeEnterSign(xx);
                         if (xx.text() !== "") {
-                            xx.text(xx.text().replace(/\s/g, ""));
+                            // xx.text(xx.text().replace(/\s/g, ""));
                             if (xx.text().length > 16) {
                                 xx.text(xx.text().slice(0, 16));
                                 anime({
@@ -587,6 +587,7 @@
                                     duration: 400
                                 });
                                 errorSound.play("ding");
+                                placeCaretAtEnd(x);
                             }
                             let arr = calculateStyle(xx.text());
                             xx.css({
@@ -596,21 +597,23 @@
                             if (xx.text() !== xx.attr("data-word")) {
                                 xx.attr("data-newword", xx.text());
                             }
-                            placeCaretAtEnd(x);
+                            //
                         }
                     });
                     xx.off("keydown");
                     xx.on('keydown', function (e) {
-                        if (e.which === 13 && xx.text() !== "") {
+                        if (e.which === 13) {
 
-                            xx.off("blur");
-                            elementWaiting = xx;
-                            triggerReplaceWord(xx, xx.attr("data-newword"));
-                            //Prevent insertion of a return
-                            //You could do other things here, for example
-                            //focus on the next field
-
-
+                            if (xx.text() !== "") {
+                                xx.off("blur");
+                                elementWaiting = xx;
+                                triggerReplaceWord(xx, xx.attr("data-newword"));
+                                //Prevent insertion of a return
+                                //You could do other things here, for example
+                                //focus on the next field
+                            }
+                            return false;
+                        } else if (e.which === 32) {
                             return false;
                         }
                     });
@@ -789,6 +792,8 @@
 
 
         function constructWordString(fgColor, bgColor, word, owner, value) {
+            word = unescape(word);
+
             owner = "h" + owner.slice(1);
 
             fgColor = "#" + fgColor.toString(16).substr(2);
@@ -865,11 +870,13 @@
                 duration: 1000,
                 complete: function (anim) {
                     $(".word").css("position", "initial");
-                    anime({
-                        targets: ".add",
-                        opacity: 1
-                    });
+
                 }
+            });
+
+            anime({
+                targets: ".add",
+                opacity: 1
             });
 
             anime({
@@ -987,7 +994,7 @@
                     type: "success",
                     title: "Success!",
                     text: "Your word was successfully added.",
-                    timer: 1500,
+                    timer: 1000,
                     showConfirmButton: false
                 });
                 successSound.play("ding");
@@ -1007,11 +1014,13 @@
                 console.log("OnReplaceWord");
                 console.log(result);
                 finishWriting(recentlyEditedIndex, false);
-                Swal.fire(
-                    'Success!',
-                    'Your word was successfully added.',
-                    'success'
-                );
+                Swal.fire({
+                    type: "success",
+                    title: "Success!",
+                    text: "Your word was successfully added.",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
                 successSound.play("ding");
             } else {
                 console.log(result);
@@ -1229,7 +1238,7 @@
                 .method('addNormalWord')
                 .params({
                     "word_index": IconConverter.toBigNumber(wordIndex),
-                    "word": word
+                    "word": escape(word)
                 })
                 .build();
             const scoreData = {
@@ -1259,7 +1268,7 @@
                 .method('replaceWord')
                 .params({
                     "word_index": IconConverter.toBigNumber(wordIndex),
-                    "word": word,
+                    "word": escape(word),
                     "style_fg": "0xffffff",
                     "style_bg": "0x000000"
                 })
