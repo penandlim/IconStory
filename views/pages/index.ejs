@@ -17,6 +17,7 @@
     <div class="add">+</div>
 </div>
 <div id="about" onclick="window.open('https://twitter.com/IconstoryOnline', '_blank')">About</div>
+<div id="enter">↵</div>
 <script type="text/javascript">
 
 
@@ -162,6 +163,8 @@
     let region = "<%- REGION %>";
 
     let numOfPeople = 0;
+
+    let container = $("#container");
 
 
     function generateFaceDivString(dataID) {
@@ -458,6 +461,33 @@
         }
     }
 
+    let enterSign = $("#enter");
+
+    function placeEnterSign(xx) {
+        let wordBox = xx[0].getBoundingClientRect();
+        let backgroundBox = container[0].getBoundingClientRect();
+
+
+        let w = enterSign.width();
+        enterSign.css({
+            "display": "block",
+            "left" : (backgroundBox.right - w) + "px" ,
+            "top" : wordBox.top + (wordBox.bottom - wordBox.top) / 2 - enterSign.height() / 2 + "px"
+        });
+    }
+
+    function hideEnterSign() {
+        enterSign.css("display", "none");
+    }
+
+    setInterval(function() {
+        if (enterSign.css("opacity") === 0 || enterSign.css("opacity") === "0")
+            enterSign.css("opacity", 1);
+        else {
+            enterSign.css("opacity", 0);
+        }
+    }, 500);
+
     function onWordFocus(x) {
         if(!checkForICONex())
             return;
@@ -522,6 +552,8 @@
                 $(x).addClass("meEditing");
                 startWriting(i);
                 console.log("focus", x);
+
+                placeEnterSign(xx);
             }
         }
     }
@@ -542,6 +574,7 @@
                 "color": jEl.attr("data-calculatedFG")
             });
             jEl.css("text-decoration", "none");
+            hideEnterSign();
         }
     }
 

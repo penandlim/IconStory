@@ -7,6 +7,8 @@ body {
 }
 
 
+
+
 #container {
 
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -20,7 +22,7 @@ body {
     width: 90vmin;
     height: 90vmin;
     opacity: 0;
-    z-index:1000;
+    z-index:50;
 }
 
 #inner {
@@ -43,6 +45,7 @@ body {
     font-weight: 900;
     position: relative;
     line-height: 5vmin;
+    cursor: pointer;
 }
 
 .preview {
@@ -142,6 +145,16 @@ body {
 }
 #about:hover {
     cursor: pointer;
+}
+
+#enter {
+    position: absolute;
+    font-weight: 900;
+    z-index: 100;
+    font-size: 10vmin;
+    color: white;
+    /* outline: black 5vmin; */
+    text-shadow: 0.1vmin 0.1vmin 0.2vmin black;
 }
 
 .add {
