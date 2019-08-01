@@ -683,11 +683,12 @@
 
         value = IconService.IconAmount.of(value, IconService.IconAmount.Unit.ICX);
 
-
+        let padding = 1;
         if (value === 0) {
             fontSize = 5;
         } else {
-            fontSize = Math.min(1 + (value / DECIMAL) / 5, 2) * 5;
+            fontSize = Math.min(1 + (value / DECIMAL), 3) * 5;
+            padding = fontSize / 5;
         }
 
         let interactHandler = ""
@@ -701,7 +702,7 @@
             (value / DECIMAL).toFixed(3) + " ICX";
 
         return "<span spellcheck=\"false\" class='word' " +
-            "style='color:" + COLORS[arr[1]] + "; background-color:" + COLORS[arr[0]] + "; opacity: 0; font-size: " + fontSize + "vmin;' " +
+            "style='color:" + COLORS[arr[1]] + "; background-color:" + COLORS[arr[0]] + "; opacity: 0; font-size: " + fontSize + "vmin; padding: "+ padding +"vmin;' " +
             "data-owner='" + owner + "' " +
             "data-value='" + value + "' " +
             "data-word='" + word + "' " +
