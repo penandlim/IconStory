@@ -79,7 +79,7 @@ body {
     position: absolute;
     left: 50%;
     top: 30%;
-    width: 60%;
+    width: 60vmin;
     transform: translateX(-50%) translateY(-30%);
     border-radius: 50%;
     -webkit-clip-path: inset(0 0 0 0 round 50%);
@@ -104,7 +104,7 @@ body {
 .word {
     display: inline;
     color: white;
-    font-size: 3vw;
+    font-size: 10vmin;
     padding: 1%;
     word-wrap: break-word;
     max-width: 100%;
@@ -359,5 +359,15 @@ body {
         top: 50%;
         transform: translateX(-50%) translateY(-50%);
         z-index: 1000;
+    }
+
+    .word {
+        display: inline;
+        color: white;
+        font-size: 3vw;
+        padding: 1%;
+        word-wrap: break-word;
+        max-width: 100%;
+        font-weight: 700;
     }
 }

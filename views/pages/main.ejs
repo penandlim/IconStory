@@ -268,7 +268,7 @@
 
     function setUpBigStory() {
         if (!isStoryInitialized) {
-            let ic = $(".innerContent");
+            let ic = innerContent;
             ic.empty();
             ic.append($(prepareWord()));
             isStoryInitialized = true;
@@ -279,10 +279,17 @@
                 translateX: ["-30%", "-50%"],
                 translateY: ["-20%",  "-30%"],
                 opacity: [0, 1],
-                duration: 2000
+                duration: 2000,
+                complete: function() {
+                }
             });
         }
     }
+
+    let currentStory = $("#currentstory");
+    let innerContent = $(".innerContent");
+
+
 
     function prepareWord() {
         let length = Object.keys(stories[epoch]["story"]).length;
@@ -351,6 +358,8 @@
                     });
             }
         } else {
+            $(".lds-ellipsis").css("opacity", 0);
+
             if (!isStoryInitialized)
                 getStoryRange(epoch - 3 * SECONDS_IN_DAY, epoch);
         }
@@ -423,7 +432,7 @@
 
             anime({
                 targets: ".lds-ellipsis",
-                opacity : 0,
+                opacity : [1, 0],
                 duration: 500,
                 easing: "easeOutQuad"
             });
