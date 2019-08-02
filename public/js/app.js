@@ -1,4 +1,4 @@
-$(function() {
+
 
     const NID = 1;
 
@@ -1466,4 +1466,3 @@ $(function() {
 
 
     });
-});

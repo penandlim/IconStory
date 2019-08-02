@@ -1,4 +1,4 @@
-$(function() {
+
 const SECONDS_IN_DAY = 86400;
 
 const CALL_ID = {
@@ -462,9 +462,12 @@ function constructBigDate() {
 
 let t = setInterval(constructDate,1000);
 
+
 $( window ).resize(function() {
     onScreenResize(false);
 });
+
+
 
 $( window ).on("load", function() {
 
@@ -505,4 +508,4 @@ $( window ).on("load", function() {
         onScreenResize(true);
     });
 });
-});
+
