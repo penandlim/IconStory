@@ -176,6 +176,7 @@ function prepareCalendarTile(d, epochInSeconds) {
         }
 
         let word = stories[epochInSeconds]["story"][i];
+        word = unescape(word);
 
         let arr = calculateStyle(word);
 
@@ -276,6 +277,8 @@ function prepareWord() {
         }
 
         let word = stories[epoch]["story"][i];
+
+        word = unescape(word);
 
         let arr = calculateStyle(word);
 
