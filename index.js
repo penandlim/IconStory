@@ -4,8 +4,9 @@ const path = require('path');
 const request = require('request');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 5000;
-const confuse = require('confusionjs');
-
+const compression = require('compression');
+const minify = require('express-minify');
+const uglifyEs = require('uglify-es');
 
 const keys = require('./keys');
 
@@ -16,12 +17,16 @@ if (app.settings.env !== "development") {
     app.use(enforce.HTTPS({trustProtoHeader: true}));
 }
 
+app.use(compression());
+app.use(minify({uglifyJsModule: uglifyEs,}));
+
+
 let ENusers = [];
 let KOusers = [];
 
 let EditingUsers = new Array(16).fill(0);
 
-let server = app.use(express.static(path.join(__dirname, 'public')))
+let server = app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600 }))
     .use(bodyParser.json()) // support json encoded bodies
     .use(bodyParser.urlencoded({ extended: true })) // support encoded bodies
     .set('views', path.join(__dirname, 'views'))
@@ -118,4 +123,10 @@ function removeAndReplaceArrayEl(arr, el, replaceTo) {
         arr[index] = replaceTo;
     }
     return arr;
+}
+
+function getIpFromReq (req) { // get the client's IP address
+    let bareIP = ":" + ((req.connection.socket && req.connection.socket.remoteAddress)
+        || req.headers["x-forwarded-for"] || req.connection.remoteAddress || "");
+    return (bareIP.match(/:([^:]+)$/) || [])[1] || "127.0.0.1";
 }
