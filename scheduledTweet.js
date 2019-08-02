@@ -43,7 +43,7 @@ request(options, function (error, response, body) {
         let count = Object.keys(body.result.story).length;
         let s = "";
         for (let i = 0; i < count; i++) {
-            s += body.result.story[i] + " ";
+            s += unescape(body.result.story[i]) + " ";
         }
         if (s === "") {
             console.log(d.getUTCFullYear() + "-" + d.getUTCMonth() + "-" + d.getUTCDate() + ": NO ONE POSTED!!" );
