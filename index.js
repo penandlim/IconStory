@@ -11,15 +11,6 @@ const keys = require('./keys');
 
 const app = express();
 
-let options = {
-    root:"./public",
-    store: "confused",
-    cache:true,
-    debug:true,
-};
-
-app.use(confuse(options));
-
 if (app.settings.env !== "development") {
     const enforce = require('express-sslify');
     app.use(enforce.HTTPS({trustProtoHeader: true}));

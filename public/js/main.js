@@ -15,8 +15,6 @@ const CALL_ID = {
     "UPDATE_STORY" : "update"
 };
 
-let arr = window.location.href.split("/");
-
 const IconService = window['icon-sdk-js'];
 
 const provider = new IconService.HttpProvider(MAINNET_URL);
