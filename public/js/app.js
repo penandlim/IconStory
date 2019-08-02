@@ -23,6 +23,8 @@ $(function() {
 
     let epoch;
 
+    let shouldEnterSignVisible = false;
+
     // Test date if it makes sense.
 
     if (DATE === "") {
@@ -182,7 +184,7 @@ $(function() {
         }, delay);
     }
 
-    let region = "<%- REGION %>";
+
 
     let numOfPeople = 0;
 
@@ -232,7 +234,7 @@ $(function() {
 
         $(".add").css("display", "block");
 
-        socket = io("/" + region);
+        let socket = io("/" + region);
 
         // data contains list of socket.id of people who are connected.
         socket.on('init', function (data, editingUsers) {
@@ -524,9 +526,12 @@ $(function() {
     let enterSign = $("#enter");
 
     function placeEnterSign(xx) {
+        shouldEnterSignVisible = true;
         let delay = 0;
         if (xx.css("margin-right") === "0px") {
             delay = 300;
+            clearInterval(intervalEnterSign);
+            intervalEnterSign = setInterval(toggleEnterSignOpacity, 500);
         } else {
 
         }
@@ -534,6 +539,9 @@ $(function() {
         xx.css("margin-right", "10vmin");
 
         setTimeout(function() {
+            if (!shouldEnterSignVisible)
+                return;
+
             let wordBox = xx[0].getBoundingClientRect();
 
             let leftString = wordBox.right + "px";
@@ -549,15 +557,18 @@ $(function() {
     function hideEnterSign(xx) {
         enterSign.css("display", "none");
         xx.css("margin-right", "0px");
+        shouldEnterSignVisible = false;
     }
 
-    setInterval(function () {
+    function toggleEnterSignOpacity() {
         if (enterSign.css("opacity") === 0 || enterSign.css("opacity") === "0")
             enterSign.css("opacity", 1);
         else {
             enterSign.css("opacity", 0);
         }
-    }, 500);
+    }
+
+    let intervalEnterSign = setInterval(toggleEnterSignOpacity, 500);
 
     function fullErrorNotice() {
         anime({
@@ -652,7 +663,7 @@ $(function() {
                 let i = $(".word").index(x);
                 $(x).addClass("meEditing");
                 startWriting(i);
-                console.log("focus", x);
+                //console.log("focus", x);
 
 
 
@@ -667,7 +678,7 @@ $(function() {
         if (jEl.hasClass("meEditing")) {
             let i = $(".word").index(x)
             cancelWriting(i);
-            console.log("blur", x);
+            //console.log("blur", x);
             jEl.removeClass("meEditing")
             x.contentEditable = false;
 
