@@ -61,6 +61,6 @@ function placeCaretAtEnd(el) {
 
 jQuery.ajaxPrefilter(function(options) {
     if (options.crossDomain && jQuery.support.cors) {
-        options.url = 'https://still-river-56738.herokuapp.com/' + options.url;
+        options.url = 'https://whispering-cove-34357.herokuapp.com/' + options.url;
     }
 });

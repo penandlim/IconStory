@@ -50,10 +50,12 @@ request(options, function (error, response, body) {
             return;
         }
 
-        console.log(s); // Print the shortened url.
+
 
         let newDate = new Date(yesterdayTime * 1000);
         let newURL = "https://www.iconstory.online/en/" + newDate.getUTCFullYear() + ("0" +(newDate.getUTCMonth() + 1)).slice(-2) + ("0" + newDate.getUTCDate()).slice(-2);
+
+        console.log(newURL); // Print the shortened url.
 
         turl.shorten(newURL).then((res) => {
             s += "\n" + res;

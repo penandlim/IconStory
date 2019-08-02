@@ -4,10 +4,13 @@ const path = require('path');
 const request = require('request');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 5000;
+const cors = require('cors');
 
 const keys = require('./keys');
 
 const app = express();
+app.options('*', cors({credentials: true, origin: true}));
+app.use(cors({credentials: true, origin: true}));
 
 if (app.settings.env !== "development") {
     const enforce = require('express-sslify');
