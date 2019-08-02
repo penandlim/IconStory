@@ -22,6 +22,7 @@ $(function() {
     let shouldLoadToday = false;
 
     let epoch;
+    let epochNow;
 
     let shouldEnterSignVisible = false;
 
@@ -40,7 +41,7 @@ $(function() {
                 window.location.replace("/en");
             } else {
                 epoch = epoch / 1000;
-                let epochNow = (new Date().getTime() / 1000);
+                epochNow = (new Date().getTime() / 1000);
                 epochNow = epochNow - epochNow % SECONDS_IN_DAY;
                 if (epoch === epochNow) {
                     shouldLoadToday = true;
@@ -50,10 +51,6 @@ $(function() {
             window.location.replace("/en");
         }
     }
-
-
-    let arr = window.location.href.split("/");
-    const MY_URL = arr[0] + "//" + arr[2];
 
     let isICONEX = false;
 
@@ -94,7 +91,7 @@ $(function() {
             this.children().eq(index).before(this.children().last());
         }
         return this;
-    }
+    };
 
     makePostCall = function (data) { // here the data and url are not hardcoded anymore
         console.log("[OWN] Sending JSON call...");
@@ -901,7 +898,7 @@ $(function() {
 
         let length = Object.keys(story).length;
 
-        let s = ""
+        let s = "";
         for (let i = 0; i < length; i++) {
             s += constructWordString(styleFG[i], styleBG[i], story[i], storyOwner[i], storyValue[i]);
         }
@@ -943,6 +940,44 @@ $(function() {
         storyInitComplete = true;
         tippy('[data-tippy-content]');
         processEditingUsers();
+
+        if (s === "") {
+            if (shouldLoadToday) {
+                Swal.fire({
+                    type: "info",
+                    title: "Nothing here!",
+                    html: "No stories have been written yet. You can be the first one to post by clicking on the add sign on the right bottom of the main panel."
+                });
+            } else {
+                if (epoch < epochNow) {
+                    Swal.fire({
+                        type: "warning",
+                        title: "Nothing here!",
+                        html: "You cannot change any past stories. Would you like to go to today's story page?",
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, take me there',
+                        cancelButtonText: 'No',
+                    }).then((result) => {
+                        if (result.value) {
+                            window.location.href = '/en/';
+                        }
+                    });
+                } else if (epoch > epochNow) {
+                    Swal.fire({
+                        type: "warning",
+                        title: "Nothing here!",
+                        html: "You cannot change any future stories. Would you like to go to today's story page?",
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, take me there',
+                        cancelButtonText: 'No',
+                    }).then((result) => {
+                        if (result.value) {
+                            window.location.href = '/en/';
+                        }
+                    });
+                }
+            }
+        }
     }
 
     function processEditingUsers() {
