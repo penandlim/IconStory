@@ -296,6 +296,7 @@ function prepareWord() {
 let lpanel = $("#lpanel");
 
 function onScreenResize(forceUpdate) {
+    console.log("test");
     if (lpanel.width() > 0) {
         let tile = $(".tile");
 
