@@ -181,6 +181,14 @@
             autoplay: false
         });
 
+        let typeSound = new Howl({
+           src: ['/sounds/typewriter.mp3'],
+           sprite: {
+               ding: [0, 1000]
+           },
+            autoplay: false
+        });
+
         function notifySound() {
             pop.play("ding");
         }
@@ -575,6 +583,7 @@
                     xx.off("input");
                     xx.on('input', function (e) {
                         placeEnterSign(xx);
+                        let shouldPlayTypeSound = true;
                         if (xx.text() !== "") {
                             // xx.text(xx.text().replace(/\s/g, ""));
                             if (xx.text().length > 16) {
@@ -586,6 +595,7 @@
                                     duration: 400
                                 });
                                 errorSound.play("ding");
+                                shouldPlayTypeSound = false;
                                 placeCaretAtEnd(x);
                             }
                             let arr = calculateStyle(xx.text());
@@ -598,6 +608,12 @@
                             }
                             //
                         }
+                        if (shouldPlayTypeSound) {
+                            console.log("typeSound");
+                            typeSound.rate(Math.random() * 0.5 + 1, typeSound.play("ding"));
+                        }
+
+
                     });
                     xx.off("keydown");
                     xx.on('keydown', function (e) {
@@ -660,6 +676,7 @@
             xx.off("input");
             xx.on('input', function (e) {
                 placeEnterSign(xx);
+                let shouldPlayTypeSound = true;
                 if (xx.text() !== "") {
                     xx.text(xx.text().replace(/\s/g, ""));
                     if (xx.text().length > 16) {
@@ -671,6 +688,7 @@
                             duration: 400
                         });
                         errorSound.play("ding");
+                        shouldPlayTypeSound = false;
                     }
                     let arr = calculateStyle(xx.text());
                     xx.css({
@@ -681,6 +699,11 @@
                         xx.attr("data-newword", xx.text());
                     }
                     placeCaretAtEnd(xx[0]);
+                }
+
+                if (shouldPlayTypeSound) {
+                    console.log("typeSound");
+                    typeSound.rate(Math.random() * 0.5 + 1, typeSound.play("ding"));
                 }
             });
             xx.off("keydown");
