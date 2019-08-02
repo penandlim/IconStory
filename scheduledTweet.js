@@ -57,7 +57,7 @@ request(options, function (error, response, body) {
 
         console.log(newURL); // Print the shortened url.
 
-        s += "\n" + res;
+        s += "\n" + newURL;
         postTweet(s);
     }
 });
