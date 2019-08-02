@@ -443,7 +443,7 @@
 
         backgroundDiv.attr("data-bgColor", backgroundDiv.css("background-color"));
 
-        updateStoryGraphics = function (data, index, isInsert) {
+        function updateStoryGraphics (data, index, isInsert) {
             console.log(data);
             let s = constructWordString(data.result.wordFG, data.result.wordBG, data.result.word, data.result.wordOwner, data.result.wordValue);
             console.log(s);
@@ -454,13 +454,17 @@
                 index = 0;
 
             if (isInsert === 1) {
-                // Inserted and its first word of the day
-                if (indexObj.length === 0) {
+                // Inserted
+                if (wordsLength === 0) {
+                    // its first word of the day
                     let inner = $("#inner");
                     inner.prepend($(s));
+                    index = 0;
                 } else if (indexObj.eq(index).length > 0) {
+                    // $(.word)[index] exists
                     indexObj.eq(index).before($(s));
                 } else {
+                    // $(.word)[index] does not exist
                     indexObj.eq(wordsLength - 1).after($(s));
                     index = wordsLength;
                 }

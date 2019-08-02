@@ -157,7 +157,7 @@ body {
 #enter {
     position: absolute;
     font-weight: 900;
-    z-index: 100000;
+    z-index: 1050;
     font-size: 15vmin;
     color: white;
     /* outline: black 5vmin; */
