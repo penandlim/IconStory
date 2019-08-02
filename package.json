@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "body-parser": "latest",
+    "confusionjs": "^1.0.6",
     "cors": "^2.8.5",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
+    "express-middleware-obfuscator": "^1.0.6",
     "express-sslify": "^1.2.0",
     "request": "^2.88.0",
     "socket.io": "^2.2.0",

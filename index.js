@@ -4,13 +4,21 @@ const path = require('path');
 const request = require('request');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 5000;
-const cors = require('cors');
+const confuse = require('confusionjs');
+
 
 const keys = require('./keys');
 
 const app = express();
-app.options('*', cors({credentials: true, origin: true}));
-app.use(cors({credentials: true, origin: true}));
+
+let options = {
+    root:"./public",
+    store: "confused",
+    cache:true,
+    debug:true,
+};
+
+app.use(confuse(options));
 
 if (app.settings.env !== "development") {
     const enforce = require('express-sslify');
@@ -31,23 +39,23 @@ let server = app.use(express.static(path.join(__dirname, 'public')))
     .get('/en/', (req, res) => res.render('pages/index', { REGION : "en" , URL: keys.URL, SCORE:keys.SCORE, DATE: ""}))
     .get('/en/:date/', (req, res) => res.render('pages/index', { REGION : "en" , URL: keys.URL, SCORE:keys.SCORE, DATE: req.params.date}))
 //    .get('/ko/', (req, res) => res.render('pages/index', { REGION : "ko" , URL: URL}))
-    .post('/api/', function(req, res) {
-
-        request.post({
-            url:     keys.URL,
-            body:    req.body,
-            json: true
-        }, function(error, response, body){
-            if (body) {
-                console.log(body);
-                res.send(JSON.stringify(body));
-            }
-            else
-                res.send(error);
-        });
-
-    })
-    .get('*', (req, res) => res.render('pages/main', {URL: keys.URL, SCORE:keys.SCORE}))
+//     .post('/api/', function(req, res) {
+//
+//         request.post({
+//             url:     keys.URL,
+//             body:    req.body,
+//             json: true
+//         }, function(error, response, body){
+//             if (body) {
+//                 console.log(body);
+//                 res.send(JSON.stringify(body));
+//             }
+//             else
+//                 res.send(error);
+//         });
+//
+//     })
+    .get('*', (req, res) => res.redirect("/"))
     .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 let sio = io.listen(server);
