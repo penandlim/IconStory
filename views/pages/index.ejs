@@ -548,27 +548,26 @@
         let enterSign = $("#enter");
 
         function placeEnterSign(xx) {
-            let offset = "";
+            let delay = 0;
             if (xx.css("margin-right") === "0px") {
-                offset = "- 5vmin";
-                console.log("offset");
+                delay = 300;
             } else {
 
             }
 
             xx.css("margin-right", "10vmin");
 
-            let wordBox = xx[0].getBoundingClientRect();
+            setTimeout(function() {
+                let wordBox = xx[0].getBoundingClientRect();
 
-            let w = enterSign.width();
+                let leftString = wordBox.right + "px";
 
-            let leftString = "calc(" + (wordBox.right) + "px " + offset + ")";
-
-            enterSign.css({
-                "display": "block",
-                "left": leftString,
-                "top": wordBox.top + (wordBox.bottom - wordBox.top) / 2 - enterSign.height() / 2 + "px"
-            });
+                enterSign.css({
+                    "display": "block",
+                    "left": leftString,
+                    "top": wordBox.top + (wordBox.bottom - wordBox.top) / 2 - enterSign.height() / 2 + "px"
+                });
+            }, delay);
         }
 
         function hideEnterSign(xx) {
@@ -583,6 +582,16 @@
                 enterSign.css("opacity", 0);
             }
         }, 500);
+
+        function fullErrorNotice() {
+            anime({
+                targets: ".background",
+                backgroundColor: ["#ff4444", backgroundDiv.attr("data-bgColor")],
+                easing: "easeOutCubic",
+                duration: 400
+            });
+            errorSound.play("ding");
+        }
 
         function onWordFocus(x) {
             queuedFunction = onWordFocus;
@@ -622,13 +631,7 @@
                             // xx.text(xx.text().replace(/\s/g, ""));
                             if (xx.text().length > 16) {
                                 xx.text(xx.text().slice(0, 16));
-                                anime({
-                                    targets: ".background",
-                                    backgroundColor: ["#ff4444", backgroundDiv.attr("data-bgColor")],
-                                    easing: "easeOutCubic",
-                                    duration: 400
-                                });
-                                errorSound.play("ding");
+                                fullErrorNotice();
                                 shouldPlayTypeSound = false;
                                 placeCaretAtEnd(x);
                             }
@@ -664,12 +667,18 @@
                             return false;
                         } else if (e.which === 32) {
                             return false;
+                        } else if (e.which === 8) {
+                            if (xx.text() === "") {
+                                fullErrorNotice();
+                            }
                         }
                     });
                     let i = $(".word").index(x);
                     $(x).addClass("meEditing");
                     startWriting(i);
                     console.log("focus", x);
+
+
 
                     placeEnterSign(xx);
                 }
@@ -759,6 +768,7 @@
                 function () {
                     onNewWordBlur(xx);
                 });
+
             placeEnterSign(xx);
         }
 

@@ -33,7 +33,7 @@ body {
 
 .word, #newword {
     background-color: white;
-    transition: all 0.3s ease-out, font-size 0s, padding 0s, line-height 0s;
+    transition: all 0.3s ease-out, font-size 0s, padding 0s, line-height 0s, margin-right 0.2s;
     padding: 1vmin;
     font-size: 5vmin;
     display: inline-block;
