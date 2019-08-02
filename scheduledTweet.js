@@ -57,13 +57,8 @@ request(options, function (error, response, body) {
 
         console.log(newURL); // Print the shortened url.
 
-        turl.shorten(newURL).then((res) => {
-            s += "\n" + res;
-            postTweet(s);
-        }).catch((err) => {
-            console.log(err);
-            postTweet(s);
-        });
+        s += "\n" + res;
+        postTweet(s);
     }
 });
 
