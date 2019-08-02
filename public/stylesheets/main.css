@@ -135,7 +135,7 @@ body {
     position: relative;
 }
 
-.tile:hover {
+.tileZoom:hover {
     cursor: pointer;
 }
 
