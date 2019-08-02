@@ -88,6 +88,7 @@
 
         const scoreAddress = '<%- SCORE %>';
         let fromAddress = "";
+        let returnFromAddress = localStorage.getItem("fromAddress");
 
         let recentlyEditedIndex = 0;
 
@@ -504,11 +505,21 @@
             const payload = event.detail.payload
             switch (type) {
                 case "RESPONSE_HAS_ACCOUNT":
-                    isICONEX = payload.hasAccount;
-                    console.log("[ICONEX] User has ICONEX installed.");
+                    if (payload) {
+                        isICONEX = payload.hasAccount;
+                        console.log("[ICONEX] User has ICONEX installed.");
+                        returnUserCheck();
+                    } else {
+                        Swal.fire({
+                            type: "info",
+                            title: "No account in ICONex",
+                            text: "You must create an account in your ICONex wallet to use this service.",
+                        });
+                    }
                     break;
                 case "RESPONSE_ADDRESS":
                     fromAddress = payload;
+                    localStorage.setItem('fromAddress', fromAddress);
                     console.log("[ICONEX] User selected " + fromAddress);
                     Swal.close();
                     if (queuedFunction !== null) {
@@ -519,27 +530,46 @@
                     console.log("[ICONEX] Got JSON Response: ");
                     onJSONsuccess(payload);
                     break;
+                case "RESPONSE_HAS_ADDRESS":
+                    if (payload) {
+                        fromAddress = returnFromAddress;
+                        console.log("[ICONEX] User returned. Setting address to " + fromAddress);
+                    }
+                    break;
                 default:
+                    break;
             }
         }
 
         let enterSign = $("#enter");
 
         function placeEnterSign(xx) {
-            let wordBox = xx[0].getBoundingClientRect();
-            let backgroundBox = container[0].getBoundingClientRect();
+            let offset = "";
+            if (xx.css("margin-right") === "0px") {
+                offset = "- 5vmin";
+                console.log("offset");
+            } else {
 
+            }
+
+            xx.css("margin-right", "10vmin");
+
+            let wordBox = xx[0].getBoundingClientRect();
 
             let w = enterSign.width();
+
+            let leftString = "calc(" + (wordBox.right) + "px " + offset + ")";
+
             enterSign.css({
                 "display": "block",
-                "left": (backgroundBox.right - w/2) + "px",
+                "left": leftString,
                 "top": wordBox.top + (wordBox.bottom - wordBox.top) / 2 - enterSign.height() / 2 + "px"
             });
         }
 
-        function hideEnterSign() {
+        function hideEnterSign(xx) {
             enterSign.css("display", "none");
+            xx.css("margin-right", "0px");
         }
 
         setInterval(function () {
@@ -658,14 +688,12 @@
                     "color": jEl.attr("data-calculatedFG")
                 });
                 jEl.css("text-decoration", "none");
-                hideEnterSign();
+                hideEnterSign(jEl);
                 missSound.play("ding");
             }
         }
 
         function onNewWordCreated(xx) {
-
-
             xx.attr('contenteditable', 'true');
 
             xx.focus();
@@ -708,13 +736,16 @@
             });
             xx.off("keydown");
             xx.on('keydown', function (e) {
-                if (e.which === 13 && xx.text() !== "") {
+                if (e.which === 13) {
+                    if (xx.text() !== "") {
+                        xx.off('blur');          // Removes other events if found
+                        elementWaiting = xx;
 
-                    xx.off('blur');          // Removes other events if found
-                    elementWaiting = xx;
+                        triggerAddWord(xx);
+                    }
 
-                    triggerAddWord(xx);
-
+                    return false;
+                } else if (e.which === 32) {
                     return false;
                 }
             });
@@ -740,9 +771,9 @@
             setTimeout(function () {
                 xx.attr("contenteditable", false);
                 xx.remove();
-                hideEnterSign();
+                hideEnterSign(xx);
             }, 200);
-            hideEnterSign();
+            hideEnterSign(xx);
             missSound.play("ding");
         }
 
@@ -765,7 +796,7 @@
             }).then((result) => {
                 if (result.value) {
                     replaceWord(xx.index(), newWord, needValue);
-                    hideEnterSign();
+                    hideEnterSign(xx);
 
                 } else if (
                     // Read more about handling dismissals
@@ -798,7 +829,7 @@
             }).then((result) => {
                 if (result.value) {
                     addNormalWord(100, xx.text(), 0);
-                    hideEnterSign();
+                    hideEnterSign(xx);
                 } else if (
                     // Read more about handling dismissals
                     result.dismiss === Swal.DismissReason.cancel
@@ -1199,7 +1230,7 @@
         };
 
         function checkForICONex() {
-            if (fromAddress === "") {
+            if (fromAddress === "" || fromAddress === null) {
                 errorSound.play("ding");
                 if (isICONEX) {
 
@@ -1221,6 +1252,17 @@
                 }
             }
             return true;
+        }
+
+        function checkIfICONexHasAddress(addr) {
+            const checkForICONEX = new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_HAS_ADDRESS',
+                    payload: addr
+                }
+            });
+
+            window.dispatchEvent(checkForICONEX);
         }
 
         getStoryRange = function (dateFrom, dateTo) {
@@ -1348,6 +1390,11 @@
             onNewWordCreated(xx);
         }
 
+        function returnUserCheck() {
+            if (returnFromAddress !== null) {
+                checkIfICONexHasAddress(returnFromAddress);
+            }
+        }
 
         $(window).on("load", function () {
 

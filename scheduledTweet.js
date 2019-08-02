@@ -50,8 +50,6 @@ request(options, function (error, response, body) {
             return;
         }
 
-
-
         let newDate = new Date(yesterdayTime * 1000);
         let newURL = "https://www.iconstory.online/en/" + newDate.getUTCFullYear() + ("0" +(newDate.getUTCMonth() + 1)).slice(-2) + ("0" + newDate.getUTCDate()).slice(-2);
 
