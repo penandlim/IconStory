@@ -1,7 +1,6 @@
 const Twit = require('twit');
 const request = require('request');
 const keys = require("./keys");
-const turl = require('turl');
 
 const SECONDS_IN_DAY = 86400;
 
