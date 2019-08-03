@@ -906,12 +906,21 @@
         $(s).appendTo("#inner");
         $(".word").each(function (i) {
             $(this).css("z-index", i + 1);
-            if (shouldLoadToday)
-                $(this).on("click", function() {
+            if (shouldLoadToday) {
+                $(this).on("click", function () {
                     onWordFocus(this);
-                }).on("blur", function() {
+                }).on("blur", function () {
                     onWordBlur(this);
                 });
+            } else {
+                $(this).on("click", function () {
+                    Swal.fire({
+                        type: "error",
+                        title: "You cannot change the past",
+                        html: "You are visiting a past story page. Editing is not allowed."
+                    });
+                });
+            }
         });
 
         anime({
