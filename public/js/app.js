@@ -26,10 +26,15 @@
 
     let shouldEnterSignVisible = false;
 
+    let realDATE = "";
+
     // Test date if it makes sense.
 
     if (DATE === "") {
         shouldLoadToday = true;
+        let de = new Date();
+
+        realDATE = de.getUTCFullYear() + ("0" + (de.getUTCMonth() + 1)).slice(-2) + ("0" + de.getUTCDate()).slice(-2);
     } else {
         let m = /^\d{8}$/gm.exec(DATE);
         if (m !== null) {
@@ -43,6 +48,7 @@
                 epoch = epoch / 1000;
                 epochNow = (new Date().getTime() / 1000);
                 epochNow = epochNow - epochNow % SECONDS_IN_DAY;
+                realDATE = DATE;
                 if (epoch === epochNow) {
                     shouldLoadToday = true;
                 }
@@ -50,6 +56,10 @@
         } else {
             window.location.replace("/en");
         }
+    }
+
+    if (realDATE !== "") {
+        $("#home").text(realDATE);
     }
 
     let isICONEX = false;
