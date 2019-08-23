@@ -18,7 +18,14 @@ if (demoConfig) {
 
 const hlsjsDefaults = {
   debug: true,
-  enableWorker: true
+  enableWorker: true,
+  xhrSetup: function(xhr, url) {
+    // if need to replace URL
+    if (url.indexOf('http://') === 0) {
+      url = "https://whispering-cove-34357.herokuapp.com/" + url;
+      xhr.open('GET', url, true);
+    }
+  }
 };
 
 let enableStreaming = getDemoConfigPropOrDefault('enableStreaming', true);
