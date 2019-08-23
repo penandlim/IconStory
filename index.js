@@ -34,6 +34,7 @@ let server = app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31
     .get('/', (req, res) => res.render('pages/main', {URL: keys.URL, SCORE:keys.SCORE}))
     .get('/en/', (req, res) => res.render('pages/index', { REGION : "en" , URL: keys.URL, SCORE:keys.SCORE, DATE: ""}))
     .get('/en/:date/', (req, res) => res.render('pages/index', { REGION : "en" , URL: keys.URL, SCORE:keys.SCORE, DATE: req.params.date}))
+    .get('/mnet/', (req, res) => res.render('pages/mnet'))
 //    .get('/ko/', (req, res) => res.render('pages/index', { REGION : "ko" , URL: URL}))
 //     .post('/api/', function(req, res) {
 //
