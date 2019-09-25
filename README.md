@@ -19,6 +19,17 @@ $ npm install
 $ npm start
 ```
 
+Your .env file should contain these settings.
+
+```
+URL=ICON_MAINNET_URL
+SCORE=SCORE_ADDRESS
+consumer_key=TWITTER_CONSUMER_KEY
+consumer_secret=TWITTER_SECRET_KEY
+access_token=TWITTER_ACCESS_TOKEN_KEY
+access_token_secret=TWITTER_ACCESS_TOKEN_SECRET_KEY
+```
+
 Your app should now be running on [localhost:5000](http://localhost:5000/).
 
 ## Deploying to Heroku
@@ -34,10 +45,10 @@ or
 
 ## Documentation
 
-For more information about using Node.js on Heroku, see these Dev Center articles:
+For more information about SCORE, ICON network, and ICX, you can refer to these documents below.
 
-- [Getting Started with Node.js on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
+- [ICON Network URLs](https://github.com/icon-project/icon-project.github.io/blob/master/docs/icon_network.md)
+- [SCORE quickstart](https://www.icondev.io/docs/score-quickstart)
+- [Using T-Bears](https://www.icondev.io/docs/tbears-overview)
+- [ICON SDKs](https://www.icondev.io/docs/sdk-overview)
+- [ICONEX extensions](https://www.icondev.io/docs/chrome-extension-connect)
