@@ -1,5 +1,8 @@
 # IconStory
 [![IconStory Demo](https://img.youtube.com/vi/nnN_OijYp08/0.jpg)](https://youtu.be/nnN_OijYp08)
+
+SCORE (Smart Contract) address: [cx3d3711258240fb4a00b940f9167da8d07ca050e1](https://tracker.icon.foundation/contract/cx3d3711258240fb4a00b940f9167da8d07ca050e1)
+
 ## Running Locally
 
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
