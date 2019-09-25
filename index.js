@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const io = require('socket.io');
 const path = require('path');
@@ -7,8 +8,6 @@ const PORT = process.env.PORT || 5000;
 const compression = require('compression');
 const minify = require('express-minify');
 const uglifyEs = require('uglify-es');
-
-const keys = require('./keys');
 
 const app = express();
 
@@ -31,10 +30,9 @@ let server = app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31
     .use(bodyParser.urlencoded({ extended: true })) // support encoded bodies
     .set('views', path.join(__dirname, 'views'))
     .set('view engine', 'ejs')
-    .get('/', (req, res) => res.render('pages/main', {URL: keys.URL, SCORE:keys.SCORE}))
-    .get('/en/', (req, res) => res.render('pages/index', { REGION : "en" , URL: keys.URL, SCORE:keys.SCORE, DATE: ""}))
-    .get('/en/:date/', (req, res) => res.render('pages/index', { REGION : "en" , URL: keys.URL, SCORE:keys.SCORE, DATE: req.params.date}))
-    .get('/mnet/', (req, res) => res.render('pages/mnet'))
+    .get('/', (req, res) => res.render('pages/main', {URL: process.env.URL, SCORE:process.env.SCORE}))
+    .get('/en/', (req, res) => res.render('pages/index', { REGION : "en" , URL: process.env.URL, SCORE:process.env.SCORE, DATE: ""}))
+    .get('/en/:date/', (req, res) => res.render('pages/index', { REGION : "en" , URL: process.env.URL, SCORE:process.env.SCORE, DATE: req.params.date}))
 //    .get('/ko/', (req, res) => res.render('pages/index', { REGION : "ko" , URL: URL}))
 //     .post('/api/', function(req, res) {
 //

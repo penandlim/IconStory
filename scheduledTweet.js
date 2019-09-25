@@ -1,14 +1,14 @@
+require('dotenv').config();
 const Twit = require('twit');
 const request = require('request');
-const keys = require("./keys");
 
 const SECONDS_IN_DAY = 86400;
 
 let T = new Twit({
-    consumer_key:         keys.consumer_key,
-    consumer_secret:      keys.consumer_secret,
-    access_token:         keys.access_token,
-    access_token_secret:  keys.access_token_secret,
+    consumer_key:         process.env.consumer_key,
+    consumer_secret:      process.env.consumer_secret,
+    access_token:         process.env.access_token,
+    access_token_secret:  process.env.access_token_secret,
     timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
     strictSSL:            true,     // optional - requires SSL certificates to be valid.
 });
@@ -18,13 +18,13 @@ let currentTime = (d.getTime() / 1000);
 let yesterdayTime = ((currentTime - currentTime % SECONDS_IN_DAY) - SECONDS_IN_DAY) + "";
 
 let options = {
-  uri: keys.URL,
+  uri: process.env.URL,
   method: "POST",
   json: {
       "jsonrpc":"2.0",
       "method":"icx_call",
       "params":{
-          "to": keys.SCORE,
+          "to": process.env.SCORE,
           "dataType":"call",
           "data":{
               "method":"getStoryOfDate",
