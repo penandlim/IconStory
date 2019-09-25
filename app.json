@@ -1,7 +1,7 @@
 {
   "name": "IconStory.Online",
   "description": "IconStory.Online",
-  "repository": "https://github.com/heroku/node-js-getting-started",
+  "repository": "https://github.com/penandlim/IconStory/",
   "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/master/public/node.svg",
   "keywords": ["node", "express", "heroku"],
   "image": "heroku/nodejs"
