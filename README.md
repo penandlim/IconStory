@@ -1,16 +1,12 @@
-# node-js-getting-started
-
-A barebones Node.js app using [Express 4](http://expressjs.com/).
-
-This application supports the [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
-
+# IconStory
+[![IconStory Demo](https://img.youtube.com/vi/nnN_OijYp08/0.jpg)](https://youtu.be/nnN_OijYp08)
 ## Running Locally
 
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
 
 ```sh
-$ git clone https://github.com/heroku/node-js-getting-started.git # or clone your own fork
-$ cd node-js-getting-started
+$ git clone https://github.com/penandlim/IconStory.git # or clone your own fork
+$ cd IconStory
 $ npm install
 $ npm start
 ```
