@@ -1,6 +1,6 @@
 # [IconStory](https://iconstory.online)
 
-[Live demo](https://iconstory.online)
+[Live website](https://iconstory.online)
 
 [Demo video](https://youtu.be/nnN_OijYp08)
 
