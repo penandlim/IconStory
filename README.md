@@ -4,7 +4,7 @@
 
 [Demo video](https://youtu.be/nnN_OijYp08)
 
-[![IconStory Demo](https://img.youtube.com/vi/nnN_OijYp08/0.jpg)](https://youtu.be/nnN_OijYp08)
+[![IconStory Demo](https://user-images.githubusercontent.com/4276174/66978001-fcc5f500-f05c-11e9-9057-88c152f2a626.png)](https://youtu.be/nnN_OijYp08)
 
 SCORE (Smart Contract) address: [cx3d3711258240fb4a00b940f9167da8d07ca050e1](https://tracker.icon.foundation/contract/cx3d3711258240fb4a00b940f9167da8d07ca050e1)
 
